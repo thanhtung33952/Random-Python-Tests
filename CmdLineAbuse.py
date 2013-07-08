@@ -29,9 +29,9 @@ funcOutDict = {"hit" : outHit, "punch" : outPunch, "poke" : outPoke,
 
 
 def main():
-    print("The self-abuse helper command line interface...\n"
-        "Type q to quit or press enter for a random abuse.\n")
-    print("You are depressed and self abusive.\n")
+    print("\n\n\nThe self-abuse helper command line interface...\n"
+        "\nType q to quit or press enter for a random abuse.\n")
+    print("\n\n\nYou are depressed and self abusive.\n")
     cont = True
     while(cont):
         selection = input('\nDo you want to hit, punch, poke, or pinch?: ')
