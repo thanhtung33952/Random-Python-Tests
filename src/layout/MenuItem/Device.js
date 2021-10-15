@@ -160,16 +160,16 @@ const handleChangeField = name => e => {
 };
 
 //component button in list
-const renderClassification = (params) => {
-    return (
-    <span
-        className={classes.classification}
-        style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
-    >
-        {params.value}
-    </span>
-    )
-};
+// const renderClassification = (params) => {
+//     return (
+//     <span
+//         className={classes.classification}
+//         style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
+//     >
+//         {params.value}
+//     </span>
+//     )
+// };
 const renderTitleLink = (params) => {
     return (
     <Link
@@ -280,7 +280,7 @@ const columns = [
     // headerAlign: 'center',
     // align: 'center',
     width: 150,
-    renderCell: renderClassification,
+    // renderCell: renderClassification,
     headerClassName: 'super-app-theme--header',
     },
     {
