@@ -87,6 +87,7 @@ export default function Sidebar(props) {
               activeClassName={classes.menuActive}
               key={index}
             >
+            {route.type !== 'hide' ? (
               <ListItem
                 className={classes.menuItem}
                 button
@@ -95,6 +96,9 @@ export default function Sidebar(props) {
                 <Typography variant="body1">{route.name}</Typography>
                 {/*badge(route.badge)*/}
               </ListItem>
+            )
+            : ''
+            }
             </NavLink>
           )
         })}
