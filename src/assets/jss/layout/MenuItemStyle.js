@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
 	root: {
@@ -21,6 +21,26 @@ export default makeStyles((theme) => ({
 			},
 			'& .MuiDataGrid-window': {
 				top: '50px !important'
+			},
+			'& .MuiDataGrid-cell': {
+				overflow: 'auto',
+        overflowY: 'hidden !important',
+        textOverflow: 'inherit',
+				'&::-webkit-scrollbar-track': {
+          backgroundColor: '#CCCCCC',
+          webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+          borderRadius: 10
+        },
+        '&::-webkit-scrollbar' :{
+          height: 5,
+          backgroundColor: '#F5F5F5',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          borderRadius: 10,
+          webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+          backgroundColor: '#918f8f',
+          outline: '1px solid slategrey'
+        }
 			}
 		},
 		'& .super-app-theme--cell': {
@@ -42,12 +62,13 @@ export default makeStyles((theme) => ({
 		'& .MuiTablePagination-actions': {
 			marginRight: 20
 		},
-		'& .MuiDataGrid-colCellTitle': {
-			// fontWeight: 600
-		}
+		'& .makeStyles-root-31': {
+			padding: '8px 20px !important',
+		},
 	},
   container: {
-    height: 'calc(100vh - 171px)',
+    height: 'calc(100vh - 132px)',
+    boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px'
   },
 	rowTitle: {
 		display: 'flex',
@@ -82,5 +103,52 @@ export default makeStyles((theme) => ({
 	},
 	btnIcon: {
 		marginLeft: 15
-	}
+	},
+	formGroup: {
+		marginLeft: 0,
+		display: 'flex',
+		// width: '100%',
+		flex: 1,
+		verticalAlign: 'middle',
+		alignItems: 'center',
+		marginRight: 20,
+		marginBottom: 10,
+		'& label': {
+		  width: '35%',
+		  fontSize: 13,
+		},
+		'& $inputControl': {
+		  '& input': {
+			padding: '5px 8px',
+		  },
+		},
+  },
+  search: {
+    // border: '1px solid gray',
+    flex: 1,
+    position: 'relative',
+    borderRadius: 10,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: 40,
+    marginLeft: 0,
+    marginTop: 20,
+  },
+  btnDelete: {
+    // marginRight: 10,
+    height: 30,
+    borderRadius: '50%',
+    minWidth: 0,
+    minHeight: 0,
+    maxHeight: 30,
+    maxWidth: 30,
+    color: '#fff',
+    backgroundColor: '#f44336',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: '#d32f2f',
+    },
+  },
 }));

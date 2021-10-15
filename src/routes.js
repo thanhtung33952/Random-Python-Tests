@@ -2,8 +2,10 @@ import { lazy } from 'react';
 
 // pages
 // const HomePage = lazy(() => import('./layout/MenuItem/Home'));
-const Tours = lazy(() => import('./layout/MenuItem/Device'));
+const Device = lazy(() => import('./layout/MenuItem/Device'));
 const Customers = lazy(() => import('./layout/MenuItem/Customer'));
+const FormCustomer = lazy(() => import('./page/Form/FormCustomer'));
+const FormDevrce = lazy(() => import('./page/Form/FormDevrce'));
 // const FlightTickets = lazy(() => import('./layout/MenuItem/FlightTickets'));
 // const Eating = lazy(() => import('./layout/MenuItem/Eating'));
 
@@ -32,8 +34,38 @@ var indexRoutes = [
   {
     path: '/Thiet-Bi',
     name: 'Thiết Bị',
-    component: Tours,
+    component: Device,
     // protected: true
+  },
+  {
+    path: `/Khach-Hang/addnew`,
+    name: 'Addnew Customer',
+    component: FormCustomer,
+    type: 'hide',
+    // protected: true
+  },
+  {
+    path: `/Khach-Hang/update/:user_id`,
+    name: 'Update Customer.',
+    component: FormCustomer,
+    // protected: true,
+    type: 'hide',
+    // permistion: 1
+  },
+  {
+    path: `/Thiet-Bi/addnew`,
+    name: 'Addnew Devrce',
+    component: FormDevrce,
+    type: 'hide',
+    // protected: true
+  },
+  {
+    path: `/Thiet-Bi/update/:device_id`,
+    name: 'Update Devrce.',
+    component: FormDevrce,
+    // protected: true,
+    type: 'hide',
+    // permistion: 1
   },
 ];
 

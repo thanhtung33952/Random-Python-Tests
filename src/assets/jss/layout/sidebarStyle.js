@@ -21,6 +21,8 @@ export default makeStyles((theme) => ({
   backdrop: {
     [theme.breakpoints.down('sm')]: {
       top: '56px',
+      
+    opacity: '0.6 !important'
     },
     [theme.breakpoints.up('sm')]: {
       top: '64px',

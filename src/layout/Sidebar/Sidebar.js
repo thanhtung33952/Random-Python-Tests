@@ -46,14 +46,18 @@ export default function Sidebar(props) {
                 activeClassName={classes.menuActive}
                 key={index}
               >
-                <ListItem
-                  className={classes.menuItem}
-                  button
-                  onClick={() => toggleMenu(index)}
-                >
-                  <Typography variant="body1">{route.name}</Typography>
-                  {/*badge(route.badge)*/}
-                </ListItem>
+                {route.type !== 'hide' ? (
+                    <ListItem
+                    className={classes.menuItem}
+                    button
+                    onClick={() => toggleMenu(index)}
+                  >
+                    <Typography variant="body1">{route.name}</Typography>
+                    {/*badge(route.badge)*/}
+                  </ListItem>
+                )
+                : ''
+                }
               </NavLink>
             )
           })}

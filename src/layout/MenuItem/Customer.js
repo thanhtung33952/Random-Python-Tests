@@ -12,15 +12,23 @@ import Button from '@material-ui/core/Button';
 // import Snackbar from '@material-ui/core/Snackbar';
 // import Notification from 'components/Notification';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { DataGrid, GridOverlay, GridToolbar } from '@material-ui/data-grid';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import {
+  DataGrid,
+  GridOverlay,
+  GridToolbarExport,
+  GridToolbarContainer
+} from '@material-ui/data-grid';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+
 
 // constant
 import { apiRoot, folderRoot } from '../../constant/index';
 
 // component common
 import Wrapper from '../../component/Wrapper/Wrapper';
+import PopupQuestion from '../../component/Popup/PopupQuestion';
 // import PopupListRequestSample from 'components/Popup/PopupListRequestSample';
 
 // helpers
@@ -36,6 +44,8 @@ export default function Customer() {
 const classes = useStyles();
 // const [isLoading, setisLoading] = useState(false);
 const [data, setData] = useState([]);
+const [open, setOpen] = useState(false);
+const [requestSelected, setRequestSelected] = useState();
 // const [cookies] = useCookies(['AuthenticationWorkflow']);
 // const userInfo = cookies.AuthenticationWorkflow;
 // const [openSampleRequest, setOpenSampleRequest] = useState(false);
@@ -128,6 +138,23 @@ const [data, setData] = useState([]);
 //     callback();
 //     setData(result);
 // };
+// open popup
+const handleClickOpen = request => {
+  setRequestSelected(request);
+  // console.log(request);
+  setOpen(true);
+};
+const handleAfterDelete = flag => {
+  setOpen(false);
+  // flag: yes||no
+  if (flag === 'yes') {
+    // deteleRequests();
+  }
+};
+// Close popup
+const handleClose = () => {
+  setOpen(false);
+};
 const handleChangeField = name => e => {
     let val = e.target.value;
     setData({ ...data, [name]: val });
@@ -147,13 +174,24 @@ const renderClassification = (params) => {
 const renderTitleLink = (params) => {
     return (
     <Link
-        to={`${folderRoot}request/${params.row.applicationNumberTemp}`}
+        to={`${folderRoot}Khach-Hang/${params.row.id}`}
         // target="_blank"
         style={{color: '#4ca4fb', textDecoration: 'none'}}
     >
         {params.value}
     </Link>
     )
+}
+const renderChangleButton = (params) => {
+  return (
+    <Button
+      variant="contained"
+      className={clsx(classes.btnDelete, classes.mLeft10)}
+      onClick={() => handleClickOpen(params.row)}
+    >
+      <DeleteIcon />
+    </Button>
+  )
 }
 // render draft
 const customer = [
@@ -206,7 +244,7 @@ const customer = [
     Distributor: 'Đại lý d',
     Customers: 23,
     Phone: '03246546846',
-    Email: '@jaghsdjashdja',
+    Email: '@jaghsdjashdja0000000000000000000000000000000000000000000',
     Address: 'abc',
     VehicleNumber: 0,
     DeviceNumber: 1,
@@ -217,72 +255,82 @@ const customer = [
 // console.log(data)
 const columns = [
     {
-    field: 'Distributor',
-    headerName: 'Nhà phân phối / Đại lý',
-    // headerAlign: 'center',
-    // align: 'center',
-    width: 250,
-    headerClassName: 'super-app-theme--header',
+      field: 'Distributor',
+      headerName: 'Nhà phân phối / Đại lý',
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 210,
+      headerClassName: 'super-app-theme--header',
     },
     {
-    field: 'Customers',
-    headerName: 'KHách hàng',
-    // headerAlign: 'center',
-    // align: 'center',
-    width: 150,
-    headerClassName: 'super-app-theme--header',
-    renderCell: renderTitleLink,
+      field: 'Customers',
+      headerName: 'KHách hàng',
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 150,
+      headerClassName: 'super-app-theme--header',
+      renderCell: renderTitleLink,
     },
     {
-    field: 'Phone',
-    headerName: 'SĐT',
-    // headerAlign: 'center',
-    // align: 'center',
-    width: 150,
-    renderCell: renderClassification,
-    headerClassName: 'super-app-theme--header',
+      field: 'Phone',
+      headerName: 'SĐT',
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 150,
+      renderCell: renderClassification,
+      headerClassName: 'super-app-theme--header',
     },
     {
-    field: 'Email',
-    headerName: 'Email',
-    // flex: 1,
-    width: 150,
-    // headerAlign: 'center',
-    headerClassName: 'super-app-theme--header',
-    cellClassName: 'super-app-theme--cell--underline',
+      field: 'Email',
+      headerName: 'Email',
+      // flex: 1,
+      width: 150,
+      // headerAlign: 'center',
+      headerClassName: 'super-app-theme--header',
+      cellClassName: 'super-app-theme--cell--underline',
     },
     {
-    field: 'Address',
-    headerName: 'Địa chỉ',
-    // headerAlign: 'center',
-    // align: 'center',
-    minWidth: 150,
-    flex: 1,
-    headerClassName: 'super-app-theme--header',
+      field: 'Address',
+      headerName: 'Địa chỉ',
+      // headerAlign: 'center',
+      // align: 'center',
+      minWidth: 150,
+      flex: 1,
+      headerClassName: 'super-app-theme--header',
     },
     {
-    field: 'VehicleNumber',
-    headerName: 'Số xe',
-    width: 120,
-    // headerAlign: 'center',
-    // align: 'center',
-    headerClassName: 'super-app-theme--header',
+      field: 'VehicleNumber',
+      headerName: 'Số xe',
+      width: 90,
+      // headerAlign: 'center',
+      // align: 'center',
+      headerClassName: 'super-app-theme--header',
     },
     {
-    field: 'DeviceNumber',
-    headerName: 'Số thiết bị',
-    width: 120,
-    // headerAlign: 'center',
-    // align: 'center',
-    headerClassName: 'super-app-theme--header',
+      field: 'DeviceNumber',
+      headerName: 'Số thiết bị',
+      width: 120,
+      // headerAlign: 'center',
+      // align: 'center',
+      headerClassName: 'super-app-theme--header',
     },
     {
-    field: 'NumberOfSims',
-    headerName: 'Số lượng sim',
-    width: 120,
-    // headerAlign: 'center',
-    // align: 'center',
-    headerClassName: 'super-app-theme--header',
+      field: 'NumberOfSims',
+      headerName: 'Số lượng sim',
+      width: 150,
+      // headerAlign: 'center',
+      // align: 'center',
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: '編集', 
+      headerName: 'Xóa',
+      headerAlign: 'center',
+      align: 'center',
+      width: 100,
+      renderCell: renderChangleButton,
+      headerClassName: 'super-app-theme--header',
+      sortable: false,
     },
 ];
 
@@ -314,6 +362,25 @@ const CustomNoRowsOverlay = () => {
 //     setFlagApi({ ...flagApi, openMsg: false, msg: '' });
 // };
 // console.log(customer.length)
+const CustomToolbar = () => {
+  return (
+    <div className={classes.formGroup}>
+      <div className={classes.search}>
+        <SearchInput
+          autoFocus
+          placeholder="Tìm trên danh sách khách hàng"
+          // onSubmit={handleSearchDraft}
+          onChange={handleChangeField('search')}
+        />
+      </div>
+      <GridToolbarContainer>
+        <GridToolbarExport style={{marginTop: 20}} csvOptions={{
+          utf8WithBom: true,
+        }}/>
+      </GridToolbarContainer>
+    </div>
+  );
+};
   return (
     <div className={classes.root}>
       <div className={classes.rowTitle}>
@@ -325,6 +392,7 @@ const CustomNoRowsOverlay = () => {
             variant="contained"
             className={clsx(classes.btnAdd, classes.btnColor)}
             // href={`${folderRoot}admin/request`}
+            // href={`${folderRoot}Customer/addnew`}
             // onClick={() => handleClickOpenSample()}
             // target="_blank"
           >
@@ -334,6 +402,7 @@ const CustomNoRowsOverlay = () => {
           <Button
             variant="contained"
             className={classes.btnAdd}
+            href={`${folderRoot}Khach-Hang/addnew`}
             // href={`${folderRoot}admin/request`}
             // onClick={() => handleClickOpenSample()}
             // target="_blank"
@@ -341,16 +410,6 @@ const CustomNoRowsOverlay = () => {
             tạo khách hàng
             <PersonAddIcon className={classes.btnIcon}/>
           </Button>
-        </div>
-      </div>
-      <div className={classes.formGroup}>
-        <div className={classes.search}>
-        <SearchInput
-          autoFocus
-          placeholder="Tìm trên danh sách khách hàng"
-          // onSubmit={handleSearchDraft}
-          onChange={handleChangeField('search')}
-        />
         </div>
       </div>
       <Wrapper>
@@ -370,10 +429,19 @@ const CustomNoRowsOverlay = () => {
                   components={{
                     LoadingOverlay: CustomLoadingOverlay,
                     NoRowsOverlay: CustomNoRowsOverlay,
-                    // Toolbar: GridToolbar,
+                    Toolbar: CustomToolbar,
                   }}
                   // onEditCellChange= {deteleUser}
               />
+              {/* popup action after call api delete */}
+              <PopupQuestion
+                open={open}
+                title="Xác nhận thông tin xóa"
+                content="Bạn có chắc muốn xóa Khách hàng này"
+                callback={handleAfterDelete}
+                handleClose={handleClose}
+              />
+              {/* end popup */}
             </div>
           </Grid>
         </Grid>
