@@ -256,7 +256,7 @@ const customer = [
 const columns = [
     {
       field: 'Distributor',
-      headerName: 'Nhà phân phối / Đại lý',
+      headerName: 'Nhà phân phối/Đại lý',
       // headerAlign: 'center',
       // align: 'center',
       width: 210,

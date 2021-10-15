@@ -32,7 +32,6 @@ export default function Header(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
-  const [open, setOpen] = useState(false);
   const handleSettingdToggle = event => setAnchorEl(event.currentTarget);
 
   const handleCloseMenu = () => setAnchorEl(null);
@@ -43,10 +42,10 @@ export default function Header(props) {
     toggleDrawer();
     if (searchExpanded) handleSearchExpandToggle();
   };
-  const handleClickOpen = () => {
-    setAnchorEl(null);
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setAnchorEl(null);
+  //   setOpen(true);
+  // };
 
   return (
     <AppBar position="static" className={classes.appBar}>
@@ -115,11 +114,11 @@ export default function Header(props) {
             horizontal: 'right'
           }}
         >
-          <MenuItem onClick={handleClickOpen}>
+          {/*<MenuItem onClick={handleClickOpen}>
             <ListItemText primary="パスワード変更" />
-          </MenuItem>
+        </MenuItem>*/}
           <MenuItem onClick={logout}>
-            <ListItemText primary="ログアウト" />
+            <ListItemText primary="logout" />
           </MenuItem>
         </Menu>
       </Toolbar>

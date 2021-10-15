@@ -2,6 +2,7 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
 	root: {
+		padding: '0 16px',
 		'& .super-app-theme--header': {
 			// backgroundColor: '#4A4E69',
 			color: '#000',
@@ -62,13 +63,15 @@ export default makeStyles((theme) => ({
 		'& .MuiTablePagination-actions': {
 			marginRight: 20
 		},
-		'& .makeStyles-root-31': {
-			padding: '8px 20px !important',
-		},
+		// '& .makeStyles-root-31': {
+		// 	padding: '8px 20px !important',
+		// },
 	},
   container: {
     height: 'calc(100vh - 132px)',
-    boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px'
+    boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px',
+	borderLeft: '15px solid transparent !important',
+	borderRight: '15px solid transparent !important'
   },
 	rowTitle: {
 		display: 'flex',

@@ -63,14 +63,15 @@ export default makeStyles((theme) => ({
   menuOption: {
     '& ul': {
       padding: 0,
-      backgroundColor: theme.palette.primary.main,
-      color: '#fff',
+      backgroundColor: '#f1f9fc',
+      color: '#000',
       '& li': {
         paddingLeft: 20,
         paddingRight: 20,
       },
       '& li span': {
         fontSize: '0.8rem',
+        fontWeight: 600,
       },
     },
   },
