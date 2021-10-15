@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   searchIcon: {
-    padding: theme.spacing(0, 2, 0, 0),
+    padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
     pointerEvents: 'none',
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   inputInput: {
     padding: 10,
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%'
   },

@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 // import Notification from 'components/Notification';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
+import Divider from '@mui/material/Divider';
 import {
   DataGrid,
   GridOverlay,
@@ -364,20 +365,25 @@ const CustomNoRowsOverlay = () => {
 // console.log(customer.length)
 const CustomToolbar = () => {
   return (
-    <div className={classes.formGroup}>
-      <div className={classes.search}>
-        <SearchInput
-          autoFocus
-          placeholder="Tìm trên danh sách khách hàng"
-          // onSubmit={handleSearchDraft}
-          onChange={handleChangeField('search')}
-        />
+    <div>
+      <div className={classes.formGroup}>
+        <div className={classes.search}>
+          <SearchInput
+            autoFocus
+            placeholder="Tìm trên danh sách khách hàng"
+            // onSubmit={handleSearchDraft}
+            onChange={handleChangeField('search')}
+          />
+        </div>
+        <GridToolbarContainer>
+          <GridToolbarExport style={{marginTop: 20}} csvOptions={{
+            utf8WithBom: true,
+          }}/>
+        </GridToolbarContainer>
       </div>
-      <GridToolbarContainer>
-        <GridToolbarExport style={{marginTop: 20}} csvOptions={{
-          utf8WithBom: true,
-        }}/>
-      </GridToolbarContainer>
+      <Divider
+        // style={{margin: '0 -15px'}}
+      />
     </div>
   );
 };

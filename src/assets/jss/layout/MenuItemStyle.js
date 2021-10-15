@@ -25,23 +25,30 @@ export default makeStyles((theme) => ({
 			},
 			'& .MuiDataGrid-cell': {
 				overflow: 'auto',
-        overflowY: 'hidden !important',
-        textOverflow: 'inherit',
+				overflowY: 'hidden !important',
+				textOverflow: 'inherit',
 				'&::-webkit-scrollbar-track': {
-          backgroundColor: '#CCCCCC',
-          webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
-          borderRadius: 10
-        },
-        '&::-webkit-scrollbar' :{
-          height: 5,
-          backgroundColor: '#F5F5F5',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          borderRadius: 10,
-          webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
-          backgroundColor: '#918f8f',
-          outline: '1px solid slategrey'
-        }
+					backgroundColor: '#CCCCCC',
+					webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+					borderRadius: 10
+				},
+				'&::-webkit-scrollbar' :{
+					height: 5,
+					backgroundColor: '#F5F5F5',
+				},
+				'&::-webkit-scrollbar-thumb': {
+					borderRadius: 10,
+					webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+					backgroundColor: '#918f8f',
+					outline: '1px solid slategrey'
+				},
+				// '& .MuiDataGrid-columnsContainer': {
+				// 	padding: '0 10px'
+				// },
+				// '& .MuiDataGrid-columnHeaderWrapper': {
+				// 	padding: '0 10px'
+				// }
+
 			}
 		},
 		'& .super-app-theme--cell': {
@@ -70,8 +77,8 @@ export default makeStyles((theme) => ({
   container: {
     height: 'calc(100vh - 132px)',
     boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px',
-	borderLeft: '15px solid transparent !important',
-	borderRight: '15px solid transparent !important'
+	// borderLeft: '15px solid transparent !important',
+	// borderRight: '15px solid transparent !important'
   },
 	rowTitle: {
 		display: 'flex',
