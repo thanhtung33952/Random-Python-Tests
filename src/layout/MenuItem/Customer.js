@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 // import * as moment from 'moment';
 import { Link } from "react-router-dom";
 import clsx from 'clsx';
@@ -21,7 +21,7 @@ import {
   GridToolbarContainer
 } from '@material-ui/data-grid';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
+// import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 
 // constant
@@ -33,7 +33,7 @@ import PopupQuestion from '../../component/Popup/PopupQuestion';
 // import PopupListRequestSample from 'components/Popup/PopupListRequestSample';
 
 // helpers
-import { isNullOrUndefined } from '../../utils/helpers';
+// import { isNullOrUndefined } from '../../utils/helpers';
 
 //component customer
 import SearchInput from '../../component/SearchForm/SearchInput';
@@ -42,351 +42,308 @@ import SearchInput from '../../component/SearchForm/SearchInput';
 import useStyles from '../../assets/jss/layout/MenuItemStyle';
 
 export default function Customer() {
-const classes = useStyles();
-// const [isLoading, setisLoading] = useState(false);
-const [data, setData] = useState([]);
-const [open, setOpen] = useState(false);
-const [requestSelected, setRequestSelected] = useState();
-// const [cookies] = useCookies(['AuthenticationWorkflow']);
-// const userInfo = cookies.AuthenticationWorkflow;
-// const [openSampleRequest, setOpenSampleRequest] = useState(false);
-// const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
-// let token = cookies.AuthenticationWorkflow.tokenAccess;
+  const classes = useStyles();
+  const [isLoading, setisLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [requestSelected, setRequestSelected] = useState();
+  // const [cookies] = useCookies(['AuthenticationWorkflow']);
+  // const userInfo = cookies.AuthenticationWorkflow;
+  // const [openSampleRequest, setOpenSampleRequest] = useState(false);
+  // const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
+  // let token = cookies.AuthenticationWorkflow.tokenAccess;
 
-// useEffect(() => {
+  useEffect(() => {
 
-//     async function getData() {
-//     if (isNullOrUndefined(token)) return;
-//     // show loading
-//     setisLoading(true);
+      async function getData() {
+      // if (isNullOrUndefined(token)) return;
+      // show loading
+      setisLoading(true);
 
-//     // call api get data
-//     const result = await getDataDraft(null, token);
+      // call api get data
+      const result = await getCustomers();
 
-//     // hide loading
-//     setisLoading(false);
+      // hide loading
+      setisLoading(false);
 
-//     // faild
-//     if (!result) return;
+      // faild
+      if (!result) return;
 
-//     // success
-//     setData(result.data);
-//     }
+      // success
+      setData(result.items);
+      }
 
-//     getData();
-// }, []);
+      getData();
+  }, []);
 
-// open popup
-// const handleClickOpenSample = () => {
-//     setOpenSampleRequest(true);
-// };
+  // open popup
+  // const handleClickOpenSample = () => {
+  //     setOpenSampleRequest(true);
+  // };
 
-// Close popup
-// const handleCloseSample = () => {
-//     setOpenSampleRequest(false);
-// };
+  // Close popup
+  // const handleCloseSample = () => {
+  //     setOpenSampleRequest(false);
+  // };
 
-// const handleClickOpen = draft => {
-//   setDraftSelected(draft);
-//   setOpen(true);
-// };
+  // const handleClickOpen = draft => {
+  //   setDraftSelected(draft);
+  //   setOpen(true);
+  // };
 
-// const handleClose = () => {
-//   setOpen(false);
-// };
-// delete User
-// const deteleDraft = async () => {
-//   setStatusSubmit({ ...statusSubmit, isLoading: true });
-//   if (isNullOrUndefined(draftSelected)) return;
-//   // call api delete
-//   const result = await callAPIDeleteDraft(draftSelected.id);
-//   // console.log(data);
-//   // Failed
-//   if (!result) {
-//     setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
-//     setOpen(false);
-//     return;
-//   }
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+  // delete User
+  // const deteleDraft = async () => {
+  //   setStatusSubmit({ ...statusSubmit, isLoading: true });
+  //   if (isNullOrUndefined(draftSelected)) return;
+  //   // call api delete
+  //   const result = await callAPIDeleteDraft(draftSelected.id);
+  //   // console.log(data);
+  //   // Failed
+  //   if (!result) {
+  //     setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
+  //     setOpen(false);
+  //     return;
+  //   }
 
-//   // success
-//   setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
-//   let newArr = [...data]; // copying the old data array
-//   let index = newArr.findIndex(x => x.id === draftSelected.id);
-//   if (index !== -1) {
-//     newArr.splice(index, 1);
-//     setData(newArr);
-//     setOpen(false);
-//   }
-// };
-// const handleAfterDelete = flag => {
-//   setOpen(false);
-//   // flag: yes||no
-//   if (flag === 'yes') {
-//     deteleDraft();
-//   }
-// };
+  //   // success
+  //   setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
+  //   let newArr = [...data]; // copying the old data array
+  //   let index = newArr.findIndex(x => x.id === draftSelected.id);
+  //   if (index !== -1) {
+  //     newArr.splice(index, 1);
+  //     setData(newArr);
+  //     setOpen(false);
+  //   }
+  // };
+  // const handleAfterDelete = flag => {
+  //   setOpen(false);
+  //   // flag: yes||no
+  //   if (flag === 'yes') {
+  //     deteleDraft();
+  //   }
+  // };
 
-// on submit search draft by key
-// const handleSearchDraft = async (formValue, callback) => {
-//     // if (isNullOrUndefined(token)) return;
-//     // console.log(token)
-//     // call api search draft
-//     const result = await callApiSearch(formValue);
-//     if (!result) {
-//     callback();
-//     return;
-//     }
-//     callback();
-//     setData(result);
-// };
-// open popup
-const handleClickOpen = request => {
-  setRequestSelected(request);
-  // console.log(request);
-  setOpen(true);
-};
-const handleAfterDelete = flag => {
-  setOpen(false);
-  // flag: yes||no
-  if (flag === 'yes') {
-    // deteleRequests();
+  // on submit search draft by key
+  // const handleSearchDraft = async (formValue, callback) => {
+  //     // if (isNullOrUndefined(token)) return;
+  //     // console.log(token)
+  //     // call api search draft
+  //     const result = await callApiSearch(formValue);
+  //     if (!result) {
+  //     callback();
+  //     return;
+  //     }
+  //     callback();
+  //     setData(result);
+  // };
+  // open popup
+  const handleClickOpen = request => {
+    setRequestSelected(request);
+    // console.log(request);
+    setOpen(true);
+  };
+  const handleAfterDelete = flag => {
+    setOpen(false);
+    // flag: yes||no
+    if (flag === 'yes') {
+      // deteleRequests();
+    }
+  };
+  // Close popup
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleChangeField = name => e => {
+      let val = e.target.value;
+      setData({ ...data, [name]: val });
+  };
+
+  //component button in list
+  // const renderClassification = (params) => {
+  //     return (
+  //     <span
+  //         className={classes.classification}
+  //         style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
+  //     >
+  //         {params.value}
+  //     </span>
+  //     )
+  // };
+  const renderTitleLink = (params) => {
+      return (
+      <Link
+          to={`${folderRoot}Khach-Hang/${params.row.id}`}
+          // target="_blank"
+          style={{color: '#4ca4fb', textDecoration: 'none'}}
+      >
+          {params.value}
+      </Link>
+      )
   }
-};
-// Close popup
-const handleClose = () => {
-  setOpen(false);
-};
-const handleChangeField = name => e => {
-    let val = e.target.value;
-    setData({ ...data, [name]: val });
-};
-
-//component button in list
-// const renderClassification = (params) => {
-//     return (
-//     <span
-//         className={classes.classification}
-//         style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
-//     >
-//         {params.value}
-//     </span>
-//     )
-// };
-const renderTitleLink = (params) => {
+  const renderChangleButton = (params) => {
     return (
-    <Link
-        to={`${folderRoot}Khach-Hang/${params.row.id}`}
-        // target="_blank"
-        style={{color: '#4ca4fb', textDecoration: 'none'}}
-    >
-        {params.value}
-    </Link>
+      <Button
+        variant="contained"
+        className={clsx(classes.btnDelete, classes.mLeft10)}
+        onClick={() => handleClickOpen(params.row)}
+      >
+        <DeleteIcon />
+      </Button>
     )
-}
-const renderChangleButton = (params) => {
-  return (
-    <Button
-      variant="contained"
-      className={clsx(classes.btnDelete, classes.mLeft10)}
-      onClick={() => handleClickOpen(params.row)}
-    >
-      <DeleteIcon />
-    </Button>
-  )
-}
-// render draft
-const customer = [
-  {
-    id: 1,
-    Distributor: 'Đại lý f',
-    Customers: 25,
-    Phone: 'abc',
-    Email: '@dgdfgfg',
-    Address: 'abc',
-    VehicleNumber: 0,
-    DeviceNumber: 1,
-    NumberOfSims: 1
-  },
-  {
-    id: 2,
-    Distributor: 'Đại lý a',
-    Customers: 36,
-    Phone: '0321',
-    Email: '@qrqwdasf',
-    Address: 'abc',
-    VehicleNumber: 0,
-    DeviceNumber: 1,
-    NumberOfSims: 1
-  },
-  {
-    id: 3,
-    Distributor: 'Đại lý b',
-    Customers: 19,
-    Phone: '099999',
-    Email: '@adfarw',
-    Address: 'abc',
-    VehicleNumber: 0,
-    DeviceNumber: 1,
-    NumberOfSims: 1
-  },
-  {
-    id: 4,
-    Distributor: 'Đại lý c',
-    Customers: 28,
-    Phone: '012349898',
-    Email: '@sfgsdfsd',
-    Address: 'abc',
-    VehicleNumber: 0,
-    DeviceNumber: 1,
-    NumberOfSims: 1
-  },
-  {
-    id: 5,
-    Distributor: 'Đại lý d',
-    Customers: 23,
-    Phone: '03246546846',
-    Email: '@jaghsdjashdja0000000000000000000000000000000000000000000',
-    Address: 'abc',
-    VehicleNumber: 0,
-    DeviceNumber: 1,
-    NumberOfSims: 1
-  },
-];
-// render columns
-// console.log(data)
-const columns = [
+  }
+  // render draft
+  const customer = [];
+  data.length > 0 &&
+  data.map((row, i) => {
+    customer.push (row = {
+      id: row.id,
+      stt: i + 1,
+      deviceId: row.deviceId,
+      firstName: row.firstName,
+      lastName: row.lastName,
+      address: row.address,
+      phone: row.phone,
+      email: row.email,
+      description: row.description
+    });
+  });
+  // render columns
+  const columns = [
     {
-      field: 'Distributor',
-      headerName: 'Nhà phân phối/Đại lý',
-      // headerAlign: 'center',
-      // align: 'center',
-      width: 210,
+      field: 'stt',
+      headerName: 'No.',
+      headerAlign: 'center',
+      align: 'center',
+      width: 150,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'Customers',
-      headerName: 'KHách hàng',
-      // headerAlign: 'center',
-      // align: 'center',
+      field: 'deviceId',
+      headerName: 'Id thiết bị',
+      headerAlign: 'center',
+      align: 'center',
       width: 150,
       headerClassName: 'super-app-theme--header',
       renderCell: renderTitleLink,
     },
     {
-      field: 'Phone',
-      headerName: 'SĐT',
-      // headerAlign: 'center',
-      // align: 'center',
+      field: 'firstName',
+      headerName: 'FirstName',
+      headerAlign: 'center',
+      align: 'center',
       width: 150,
       // renderCell: renderClassification,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'Email',
-      headerName: 'Email',
-      // flex: 1,
+      field: 'lastName',
+      headerName: 'LastName',
+      headerAlign: 'center',
+      align: 'center',
       width: 150,
-      // headerAlign: 'center',
       headerClassName: 'super-app-theme--header',
       cellClassName: 'super-app-theme--cell--underline',
     },
     {
       field: 'Address',
       headerName: 'Địa chỉ',
-      // headerAlign: 'center',
-      // align: 'center',
-      minWidth: 150,
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: 200,
       flex: 1,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'VehicleNumber',
-      headerName: 'Số xe',
-      width: 90,
-      // headerAlign: 'center',
+      field: 'phone',
+      headerName: 'SĐT',
+      headerAlign: 'center',
       // align: 'center',
-      headerClassName: 'super-app-theme--header',
-    },
-    {
-      field: 'DeviceNumber',
-      headerName: 'Số thiết bị',
-      width: 120,
-      // headerAlign: 'center',
-      // align: 'center',
-      headerClassName: 'super-app-theme--header',
-    },
-    {
-      field: 'NumberOfSims',
-      headerName: 'Số lượng sim',
       width: 150,
-      // headerAlign: 'center',
-      // align: 'center',
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: '編集', 
+      field: 'email',
+      headerName: 'Email',
+      headerAlign: 'center',
+      // align: 'center',
+      width: 150,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'description',
+      headerName: 'Miêu tả',
+      headerAlign: 'center',
+      // align: 'center',
+      width: 150,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'Xóa', 
       headerName: 'Xóa',
       headerAlign: 'center',
       align: 'center',
-      width: 100,
+      width: 150,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
     },
-];
+  ];
 
-const CustomLoadingOverlay = () => {
+  const CustomLoadingOverlay = () => {
     return (
     <GridOverlay>
-        <div className={classes.LoadingGridOverlay}>
+      <div className={classes.LoadingGridOverlay}>
         <CircularProgress
-        size={50}
-        className={classes.iconProgress}
-    />
-        </div>
-    </GridOverlay>
-    );
-};
-const CustomNoRowsOverlay = () => {
-    return (
-    <GridOverlay>
-        <div style={{align: 'center'}}>
-        データがありません。
-        </div>
-    </GridOverlay>
-    );
-};
-// const handleSelectRow = target => {
-//   setDraftSelected(target.data);
-// }  
-// const closeNotification = () => {
-//     setFlagApi({ ...flagApi, openMsg: false, msg: '' });
-// };
-// console.log(customer.length)
-const CustomToolbar = () => {
-  return (
-    <div>
-      <div className={classes.formGroup}>
-        <div className={classes.search}>
-          <SearchInput
-            autoFocus
-            placeholder="Tìm trên danh sách khách hàng"
-            // onSubmit={handleSearchDraft}
-            onChange={handleChangeField('search')}
-          />
-        </div>
-        <GridToolbarContainer>
-          <GridToolbarExport style={{marginTop: 20}} csvOptions={{
-            utf8WithBom: true,
-          }}/>
-        </GridToolbarContainer>
+          size={50}
+          className={classes.iconProgress}
+        />
       </div>
-      <Divider
-        // style={{margin: '0 -15px'}}
-      />
-    </div>
-  );
-};
+    </GridOverlay>
+    );
+  };
+  const CustomNoRowsOverlay = () => {
+    return (
+      <GridOverlay>
+        <div style={{align: 'center'}}>
+          không có dữ liệu.
+        </div>
+      </GridOverlay>
+    );
+  };
+  // const handleSelectRow = target => {
+  //   setDraftSelected(target.data);
+  // }  
+  // const closeNotification = () => {
+  //     setFlagApi({ ...flagApi, openMsg: false, msg: '' });
+  // };
+  // console.log(customer.length)
+  const CustomToolbar = () => {
+    return (
+      <div>
+        <div className={classes.formGroup}>
+          <div className={classes.search}>
+            <SearchInput
+              autoFocus
+              placeholder="Tìm trên danh sách khách hàng"
+              // onSubmit={handleSearchDraft}
+              onChange={handleChangeField('search')}
+            />
+          </div>
+          <GridToolbarContainer>
+            <GridToolbarExport style={{marginTop: 20}} csvOptions={{
+              utf8WithBom: true,
+            }}/>
+          </GridToolbarContainer>
+        </div>
+        <Divider
+          // style={{margin: '0 -15px'}}
+        />
+      </div>
+    );
+  };
   return (
     <div className={classes.root}>
       <div className={classes.rowTitle}>
@@ -394,17 +351,6 @@ const CustomToolbar = () => {
           Danh sách khách hàng ({customer.length})
         </Typography>
         <div className={classes.rowButtonAdd}>
-          <Button
-            variant="contained"
-            className={clsx(classes.btnAdd, classes.btnColor)}
-            // href={`${folderRoot}admin/request`}
-            // href={`${folderRoot}Customer/addnew`}
-            // onClick={() => handleClickOpenSample()}
-            // target="_blank"
-          >
-            nhập đại lý
-            <GroupAddIcon className={classes.btnIcon}/>
-          </Button>
           <Button
             variant="contained"
             className={classes.btnAdd}
@@ -430,7 +376,7 @@ const CustomToolbar = () => {
                   className={classes.container}
                   columns={columns}
                   rows={customer}
-                  // loading={isLoading}
+                  loading={isLoading}
                   // hideFooterSelectedRowCount={true}
                   components={{
                     LoadingOverlay: CustomLoadingOverlay,
@@ -454,4 +400,19 @@ const CustomToolbar = () => {
       </Wrapper>
     </div>
   );
+}
+//  get Customers
+async function getCustomers() {
+  try {
+    const res = await axios.get(`${apiRoot}/`);
+    // error
+    if (res.status !== 200) {
+      return null;
+    }
+    // console.log(res.data);
+    return res.data.data;
+  } catch (error) {
+    // console.log(error);
+    return null;
+  }
 }

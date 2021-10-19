@@ -122,7 +122,7 @@ export default makeStyles((theme) => ({
     marginBottom: 20,
   },
   scrollPage :{
-    overflowY: 'scroll',
+    overflowY: 'auto',
     height: 'calc(100vh - 220px)'
   }
 }));

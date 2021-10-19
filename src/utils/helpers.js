@@ -13,11 +13,11 @@ export function isEmail(mailAddress) {
 }
 
 export function isNullOrEmpty(value) {
-  return !value || value == undefined || value == '' || value.length == 0;
+  return !value || value === undefined || value === '' || value.length === 0;
 }
 
 export function isNullOrUndefined(object) {
-  return !object || object == undefined;
+  return !object || object === undefined;
 }
 
 export const convertFloat = val => {

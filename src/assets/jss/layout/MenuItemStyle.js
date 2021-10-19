@@ -121,7 +121,7 @@ export default makeStyles((theme) => ({
 		flex: 1,
 		verticalAlign: 'middle',
 		alignItems: 'center',
-		marginRight: 20,
+		marginRight: 22,
 		marginBottom: 10,
 		'& label': {
 		  width: '35%',

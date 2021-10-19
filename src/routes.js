@@ -1,11 +1,18 @@
 import { lazy } from 'react';
 
+// icon
+import PersonIcon from '@mui/icons-material/Person';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
+import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
 // pages
 // const HomePage = lazy(() => import('./layout/MenuItem/Home'));
-const Device = lazy(() => import('./layout/MenuItem/Device'));
 const Customers = lazy(() => import('./layout/MenuItem/Customer'));
 const FormCustomer = lazy(() => import('./page/Form/FormCustomer'));
-const FormDevrce = lazy(() => import('./page/Form/FormDevrce'));
+const Device = lazy(() => import('./layout/MenuItem/Device')); 
+const FormDevice = lazy(() => import('./page/Form/FormDevice'));
+const DeviceType = lazy(() => import('./layout/MenuItem/DeviceType'));
+const FormDeviceType = lazy(() => import('./page/Form/FormDeviceType'));
+
 // const FlightTickets = lazy(() => import('./layout/MenuItem/FlightTickets'));
 // const Eating = lazy(() => import('./layout/MenuItem/Eating'));
 
@@ -29,12 +36,7 @@ var indexRoutes = [
     name: 'Khách Hàng',
     component: Customers,
     type: 'submenu',
-    // protected: true
-  },
-  {
-    path: '/Thiet-Bi',
-    name: 'Thiết Bị',
-    component: Device,
+    icon: <PersonIcon/>
     // protected: true
   },
   {
@@ -53,19 +55,46 @@ var indexRoutes = [
     // permistion: 1
   },
   {
+    path: '/Thiet-Bi',
+    name: 'Thiết Bị',
+    component: Device,
+    icon: <PhoneIphoneIcon />
+    // protected: true
+  },
+  {
     path: `/Thiet-Bi/addnew`,
-    name: 'Addnew Devrce',
-    component: FormDevrce,
+    name: 'Addnew Device',
+    component: FormDevice,
     type: 'hide',
     // protected: true
   },
   {
     path: `/Thiet-Bi/update/:device_id`,
-    name: 'Update Devrce.',
-    component: FormDevrce,
+    name: 'Update Device.',
+    component: FormDevice,
     // protected: true,
     type: 'hide',
     // permistion: 1
+  },
+  {
+    path: '/Loai-Thiet-Bi',
+    name: 'Loại Thiết Bị',
+    component: DeviceType,
+    icon: <DevicesOtherIcon />
+    // protected: true
+  },
+  {
+    path: `/Loai-Thiet-Bi/addnew`,
+    name: 'Addnew DeviceType',
+    component: FormDeviceType,
+    type: 'hide',
+    // protected: true
+  },
+  {
+    path: `/Loai-Thiet-Bi/update/:deviceType_id`,
+    name: 'Update DeviceType.',
+    component: FormDeviceType,
+    type: 'hide',
   },
 ];
 

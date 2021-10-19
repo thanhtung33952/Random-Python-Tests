@@ -31,25 +31,31 @@ import PopupQuestion from '../../component/Popup/PopupQuestion';
 // import PopupListRequestSample from 'components/Popup/PopupListRequestSample';
 
 // helpers
-// import { isNullOrUndefined } from '../../utils/helpers';
+import { isNullOrUndefined, isNullOrEmpty } from '../../utils/helpers';
 
-//component customer
+//component custom
 import SearchInput from '../../component/SearchForm/SearchInput';
 
 // jss
 import useStyles from '../../assets/jss/layout/MenuItemStyle';
 
-export default function Device() {
-const classes = useStyles();
-const [isLoading, setisLoading] = useState(false);
-const [data, setData] = useState([]);
-const [open, setOpen] = useState(false);
-const [requestSelected, setRequestSelected] = useState();
-// const [cookies] = useCookies(['AuthenticationWorkflow']);
-// const userInfo = cookies.AuthenticationWorkflow;
-// const [openSampleRequest, setOpenSampleRequest] = useState(false);
-// const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
-// let token = cookies.AuthenticationWorkflow.tokenAccess;
+export default function DeviceType() {
+  const classes = useStyles();
+  const [isLoading, setisLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [deviceTypeSelected, setDeviceTypeSelected] = useState();
+  // const [cookies] = useCookies(['AuthenticationWorkflow']);
+  // const userInfo = cookies.AuthenticationWorkflow;
+  // let token = cookies.AuthenticationWorkflow.tokenAccess;
+
+  // flag submit
+  const [statusSubmit, setStatusSubmit] = useState({
+    status: 0, // -1: error, 1: success
+    isLoading: false,
+    isLoading2: false,
+    msg: ''
+  });
 
   useEffect(() => {
     async function getData() {
@@ -58,7 +64,7 @@ const [requestSelected, setRequestSelected] = useState();
     setisLoading(true);
 
     // call api get data
-    const result = await getDevices();
+    const result = await getDeviceTypes();
 
     // hide loading
     setisLoading(false);
@@ -73,80 +79,55 @@ const [requestSelected, setRequestSelected] = useState();
     getData();
   }, []);
 
-  // open popup
-  // const handleClickOpenSample = () => {
-  //     setOpenSampleRequest(true);
-  // };
-
-  // Close popup
-  // const handleCloseSample = () => {
-  //     setOpenSampleRequest(false);
-  // };
-
-  // const handleClickOpen = draft => {
-  //   setDraftSelected(draft);
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+  console.log(deviceTypeSelected)
   // delete User
-  // const deteleDraft = async () => {
-  //   setStatusSubmit({ ...statusSubmit, isLoading: true });
-  //   if (isNullOrUndefined(draftSelected)) return;
-  //   // call api delete
-  //   const result = await callAPIDeleteDraft(draftSelected.id);
-  //   // console.log(data);
-  //   // Failed
-  //   if (!result) {
-  //     setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
-  //     setOpen(false);
-  //     return;
-  //   }
+  const deteleDeviceType = async () => {
+    setStatusSubmit({ ...statusSubmit, isLoading: true });
+    if (isNullOrUndefined(deviceTypeSelected)) return;
+    console.log(deviceTypeSelected)
+    // call api delete
+    const result = await callAPIDeleteDeviceTypes(deviceTypeSelected.id);
+    // Failed
+    if (!result) {
+      setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
+      setOpen(false);
+      return;
+    }
 
-  //   // success
-  //   setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
-  //   let newArr = [...data]; // copying the old data array
-  //   let index = newArr.findIndex(x => x.id === draftSelected.id);
-  //   if (index !== -1) {
-  //     newArr.splice(index, 1);
-  //     setData(newArr);
-  //     setOpen(false);
-  //   }
-  // };
-  // const handleAfterDelete = flag => {
-  //   setOpen(false);
-  //   // flag: yes||no
-  //   if (flag === 'yes') {
-  //     deteleDraft();
-  //   }
-  // };
+    // success
+    setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
+    let newArr = [...data]; // copying the old data array
+    let index = newArr.findIndex(x => x.id === deviceTypeSelected.id);
+    if (index !== -1) {
+      newArr.splice(index, 1);
+      setData(newArr);
+      setOpen(false);
+    }
+  };
 
-  // on submit search draft by key
-  // const handleSearchDraft = async (formValue, callback) => {
-  //     // if (isNullOrUndefined(token)) return;
-  //     // console.log(token)
-  //     // call api search draft
-  //     const result = await callApiSearch(formValue);
-  //     if (!result) {
-  //     callback();
-  //     return;
-  //     }
-  //     callback();
-  //     setData(result);
-  // };
+  // on submit search DeviceType by key
+  const handleSearchDeviceType = async (formValue, callback) => {
+    // call api search user
+    const result = await getDeviceTypes(formValue);
+    // console.log(result)
+    if (!result) {
+      callback();
+      return;
+    }
+    callback();
+    setData(result.items);
+  };
   // open popup
-  const handleClickOpen = request => {
-    setRequestSelected(request);
-    // console.log(request);
+  const handleClickOpen = deviceType => {
+    setDeviceTypeSelected(deviceType);
+    // console.log(deviceType);
     setOpen(true);
   };
   const handleAfterDelete = flag => {
     setOpen(false);
     // flag: yes||no
     if (flag === 'yes') {
-      // deteleRequests();
+      deteleDeviceType();
     }
   };
   // Close popup
@@ -157,22 +138,10 @@ const [requestSelected, setRequestSelected] = useState();
       let val = e.target.value;
       setData({ ...data, [name]: val });
   };
-
-  //component button in list
-  // const renderClassification = (params) => {
-  //     return (
-  //     <span
-  //         className={classes.classification}
-  //         style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
-  //     >
-  //         {params.value}
-  //     </span>
-  //     )
-  // };
   const renderTitleLink = (params) => {
       return (
       <Link
-          to={`${folderRoot}Thiet-Bi/${params.row.id}`}
+          to={`${folderRoot}Loai-Thiet-Bi/update/${params.row.id}`}
           // target="_blank"
           style={{color: '#4ca4fb', textDecoration: 'none'}}
       >
@@ -191,59 +160,46 @@ const [requestSelected, setRequestSelected] = useState();
       </Button>
     )
   }
-  // select request
-  const handleSelectRow = target => {
-    setRequestSelected(target.data);
-  }
-  // render Devices
-  const Devices = [];
+
+  // render DeviceTypes
+  const DeviceTypes = [];
   data.length > 0 &&
-  data.map((row, i) => {
-    Devices.push (row = {
+  data.map((row, i) => (
+    DeviceTypes.push (row = {
       id: row.id,
       stt: i + 1,
-      deviceTypeId: row.deviceTypeId,
-      code: row.code,
-      imei: row.imei
-    });
-  });
+      name: row.name,
+      description: row.description,
+    })
+  ));
+
   // render columns
-  // console.log(data)
   const columns = [
     {
       field: 'stt',
       headerName: 'No.',
       headerAlign: 'center',
       align: 'center',
-      width: 150,
+      width: 100,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'deviceTypeId',
-      headerName: 'Id loại thiết bị',
+      field: 'name',
+      headerName: 'Loại Thiết Bị',
       headerAlign: 'center',
       align: 'center',
-      width: 200,
+      width: 250,
       headerClassName: 'super-app-theme--header',
       renderCell: renderTitleLink,
     },
     {
-      field: 'code',
-      headerName: 'Code',
-      headerAlign: 'center',
-      align: 'center',
-      width: 200,
-      headerClassName: 'super-app-theme--header',
-    },
-    {
-      field: 'imei',
-      headerName: 'Imei',
+      field: 'description',
+      headerName: 'Miêu Tả',
       headerAlign: 'center',
       align: 'center',
       flex: 1,
-      minWidth: 200,
+      minWidth: 300,
       headerClassName: 'super-app-theme--header',
-      cellClassName: 'super-app-theme--cell--underline',
     },
     {
       field: 'Xóa',
@@ -258,40 +214,35 @@ const [requestSelected, setRequestSelected] = useState();
 
   const CustomLoadingOverlay = () => {
     return (
-      <GridOverlay>
-        <div className={classes.LoadingGridOverlay}>
-          <CircularProgress
-            size={50}
-            className={classes.iconProgress}
-          />
-          </div>
-      </GridOverlay>
-    );
-  };
-  const CustomNoRowsOverlay = () => {
-    return (
     <GridOverlay>
-      <div style={{align: 'center'}}>
-        không có dữ liệu.
+      <div className={classes.LoadingGridOverlay}>
+        <CircularProgress
+          size={50}
+          className={classes.iconProgress}
+        />
       </div>
     </GridOverlay>
     );
   };
-  // const handleSelectRow = target => {
-  //   setDraftSelected(target.data);
-  // }  
-  // const closeNotification = () => {
-  //     setFlagApi({ ...flagApi, openMsg: false, msg: '' });
-  // };
-  // console.log(Devices.length)
+  const CustomNoRowsOverlay = () => {
+    return (
+      <GridOverlay>
+        <div style={{align: 'center'}}>
+          không có dữ liệu.
+        </div>
+      </GridOverlay>
+    );
+  };
+  // Tool bar
   const CustomToolbar = () => {
     return (
       <div className={classes.formGroup}>
         <div className={classes.search}>
           <SearchInput
             autoFocus
-            placeholder="Tìm trên danh sách thiết bị"
-            // onSubmit={handleSearchDraft}
+            placeholder="Tìm trên danh sách loại thiết bị"
+            // styleSearch="enter"
+            onSubmit={handleSearchDeviceType}
             onChange={handleChangeField('search')}
           />
         </div>
@@ -303,32 +254,21 @@ const [requestSelected, setRequestSelected] = useState();
       </div>
     );
   };
+
   return (
     <div className={classes.root}>
       <div className={classes.rowTitle}>
         <Typography className={classes.titleTool}>
-          Danh sách thiết bị ({Devices.length})
+          Danh sách loại thiết bị ({DeviceTypes.length})
         </Typography>
         <div className={classes.rowButtonAdd}>
-          {/*<Button
-            variant="contained"
-            className={clsx(classes.btnAdd, classes.btnColor)}
-            // href={`${folderRoot}admin/request`}
-            // onClick={() => handleClickOpenSample()}
-            // target="_blank"
-          >
-            nhập đại lý
-            <GroupAddIcon className={classes.btnIcon}/>
-          </Button>*/}
           <Button
             variant="contained"
             className={classes.btnAdd}
-            href={`${folderRoot}Thiet-Bi/addnew`}
-            // href={`${folderRoot}admin/request`}
-            // onClick={() => handleClickOpenSample()}
+            href={`${folderRoot}Loai-Thiet-Bi/addnew`}
             // target="_blank"
           >
-            tạo thiết bị
+            tạo loại thiết bị
             <PersonAddIcon className={classes.btnIcon}/>
           </Button>
         </div>
@@ -344,8 +284,8 @@ const [requestSelected, setRequestSelected] = useState();
                   disableColumnMenu
                   className={classes.container}
                   columns={columns}
-                  rows={Devices}
-                  onRowSelected={handleSelectRow}
+                  rows={DeviceTypes}
+                  // onRowSelected={handleSelectRow}
                   loading={isLoading}
                   // hideFooterSelectedRowCount={true}
                   components={{
@@ -371,18 +311,44 @@ const [requestSelected, setRequestSelected] = useState();
     </div>
   );
 }
-//  get Devices
-async function getDevices() {
+//  get DeviceTypes
+async function getDeviceTypes(data) {
+  // console.log(data)
+  let url = `${apiRoot}/device-types?limit=1000000000`;
+  if (!isNullOrUndefined(data)) {
+    url = `${apiRoot}/device-types?Search=${data.searchTerm}&limit=1000000000`;
+  }
   try {
-    const res = await axios.get(`${apiRoot}/`);
+    const res = await axios.get( url );
     // error
     if (res.status !== 200) {
       return null;
     }
-    // console.log(res.data);
+    // console.log(res.data.data.items);
     return res.data.data;
   } catch (error) {
     // console.log(error);
     return null;
   }
 }
+
+//  call API Delete DeviceTypes
+async function callAPIDeleteDeviceTypes(id, data) {
+  // console.log(id)
+  if (isNullOrEmpty(id)) return;
+  try {
+    const res = await axios.delete(`${apiRoot}/device-types/${id}`, data);
+    // error
+    if (res.status !== 200) {
+      return false;
+    }
+    // success
+    return true;
+  } catch (error) {
+    if (error.response.status === 400 && error.response.data.code === -2) {
+      return -2;
+    }
+    return false;
+  }
+}
+

@@ -39,22 +39,22 @@ import useStyles from '../../assets/jss/Page/FormCustomer';
 export default function FormCustomer() {
   const classes = useStyles();
   // mode insert/update
-  let { user_id } = useParams();
+  let { customer_id } = useParams();
   const [isNew, setNewUser] = useState(true);
   const [userData, setUserData] = useState(''); // userName, email, role, departmentId, approvalGroupId
   // data form
-  const distributors = useFormInput(
+  const deviceId = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
   );
-  const client = useFormInput(
+  const firstName = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
   );
   
-  const NumberPhone = useFormInput(
+  const lastName = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
@@ -73,19 +73,13 @@ export default function FormCustomer() {
       true
   );
   
-  const vehicle = useFormInput(
+  const phone = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
   );
   
-  const device = useFormInput(
-    !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
-      ? userData : '',
-      true
-  );
-  
-  const sim = useFormInput(
+  const description = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
@@ -620,21 +614,21 @@ export default function FormCustomer() {
       <div className={clsx(classes.formContent, classes.scrollPage)}>
         <div className={classes.formGroup}>
           <label>
-          Nhà phân phối / Đại lý <em>（Bắt Buộc）</em>
+            Id thiết bị <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...distributors} />
+          <TextField {...deviceId} />
         </div>
         <div className={classes.formGroup}>
           <label>
-          KHách hàng <em>（Bắt Buộc）</em>
+            FirstName <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...client} />
+          <TextField {...firstName} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            SĐT <em>（Bắt Buộc）</em>
+            LastName <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...NumberPhone} />
+          <TextField {...lastName} />
         </div>
         <div className={classes.formGroup}>
           <label>
@@ -650,21 +644,15 @@ export default function FormCustomer() {
         </div>
         <div className={classes.formGroup}>
           <label>
-          Số xe <em>（Bắt Buộc）</em>
+            SĐT <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...vehicle} />
+          <TextField {...phone} />
         </div>
         <div className={classes.formGroup}>
           <label>
-          Số thiết bị <em>（Bắt Buộc）</em>
+            Miêu tả <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...device} />
-        </div>
-        <div className={classes.formGroup}>
-          <label>
-          Số lượng sim <em>（Bắt Buộc）</em>
-          </label>
-          <TextField {...sim} />
+          <TextField {...description} />
         </div>
         
         {/* row submit */}

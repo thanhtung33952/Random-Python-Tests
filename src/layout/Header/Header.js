@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes, { instanceOf } from 'prop-types';
+import PropTypes from 'prop-types';
 // import { withCookies, Cookies } from 'react-cookie';
 
 // @material-ui components
@@ -28,7 +28,11 @@ import useStyles from '../../assets/jss/layout/headerStyle';
 // import PopupChangePassword from 'components/Authentication/PopupChangePassword';
 
 export default function Header(props) {
-  const { userInfo, logo, logoAltText, toggleDrawer, logout } = props;
+  const {
+    // userInfo, logo, logoAltText, 
+    toggleDrawer,
+    logout
+  } = props;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
@@ -68,7 +72,7 @@ export default function Header(props) {
               component="div" 
               className={classes.textHeader}
             >
-              Vietmap Motrak
+              Vietmap Ecevn
             </Typography>
           </Toolbar>
         </div>

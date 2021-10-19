@@ -22,7 +22,7 @@ export default function Sidebar(props) {
     setActiveRoute(activeRoute === index ? undefined : index);
 
   return (
-    <>
+    <React.Fragment>
       <Hidden smDown>
         <Drawer
           variant="persistent"
@@ -47,12 +47,17 @@ export default function Sidebar(props) {
                 key={index}
               >
                 {route.type !== 'hide' ? (
-                    <ListItem
+                  <ListItem
                     className={classes.menuItem}
                     button
                     onClick={() => toggleMenu(index)}
                   >
-                    <Typography variant="body1">{route.name}</Typography>
+                    <Typography variant="body1" style={{paddingRight: 20}}>
+                      {route.icon}
+                    </Typography>
+                    <Typography variant="body1">
+                      {route.name}
+                    </Typography>
                     {/*badge(route.badge)*/}
                   </ListItem>
                 )
@@ -93,7 +98,12 @@ export default function Sidebar(props) {
                 button
                 onClick={() => toggleMenu(index)}
               >
-                <Typography variant="body1">{route.name}</Typography>
+              <Typography variant="body1" style={{paddingRight: 20}}>
+                {route.icon}
+              </Typography>
+              <Typography variant="body1">
+                {route.name}
+              </Typography>
                 {/*badge(route.badge)*/}
               </ListItem>
             )
@@ -105,7 +115,7 @@ export default function Sidebar(props) {
           {/* end icon toggle menu */}
         </SwipeableDrawer>
       </Hidden>
-    </>
+    </React.Fragment>
   );
 }
 

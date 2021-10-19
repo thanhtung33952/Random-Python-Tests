@@ -36,81 +36,29 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from '../../assets/jss/Page/FormCustomer';
 // import { folderRoot } from '../../constant/index';
 
-export default function FormDevrce() {
+export default function FormDevice() {
   const classes = useStyles();
   // mode insert/update
-  let { devrce_id } = useParams();
+  let { device_id } = useParams();
   const [isNew, setNewUser] = useState(true);
   const [userData, setUserData] = useState(''); // userName, email, role, departmentId, approvalGroupId
   // data form
-  const distributors = useFormInput(
+  const deviceTypeId = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
   );
-  const client = useFormInput(
-    !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
-      ? userData : '',
-      true
-  );
-  
-  const NumberPhone = useFormInput(
+  const code = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
   );
   
-  const email = useFormInput(
-    !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
-      ? userData : '',
-      true,
-      true
-  );
-  
-  const address = useFormInput(
+  const imei = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
       ? userData : '',
       true
   );
-  
-  const vehicle = useFormInput(
-    !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
-      ? userData : '',
-      true
-  );
-  
-  const device = useFormInput(
-    !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
-      ? userData : '',
-      true
-  );
-  
-  const sim = useFormInput(
-    !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
-      ? userData : '',
-      true
-  );
-  // const status = useFormSelect(
-  //   !isNullOrEmpty(userData) ? userData.status : undefined,
-  //   true
-  // );
-  // const role = useFormSelect(
-  //   !isNullOrUndefined(userData) && !isNullOrUndefined(userData.role)
-  //     ? userData.role
-  //     : 0,
-  // );
-  // const departmentId = useFormSelect(
-  //   !isNullOrEmpty(userData) ? userData.departmentId : undefined,
-  //   true
-  // );
-  // const password = useFormInput(
-  //   !isNullOrEmpty(userData) ? userData.password : '',
-  //   isNew ? true : false
-  // );
-  // const rePassWord = useFormInput(
-  //   !isNullOrEmpty(userData) ? userData.password : '',
-  //   true
-  // );
   // group data
   // const [listGroup, setListGroup] = useState(null);
   // const [groupSelect, setGroupSelect] = useState([]);
@@ -614,57 +562,27 @@ export default function FormDevrce() {
     <div className={classes.root}>
       <div className={classes.headFormGroup}>
         <Typography className={classes.titleForm}>
-          {isNew ? `Thêm khach hàng mới` : `Chỉnh sửa thông tin khách hàng`}
+          {isNew ? `Thêm thiết bị mới` : `Chỉnh sửa thông tin thiết bị`}
         </Typography>
       </div>
       <div className={clsx(classes.formContent, classes.scrollPage)}>
         <div className={classes.formGroup}>
           <label>
-          Nhà phân phối / Đại lý <em>（Bắt Buộc）</em>
+            Id loại thiết bị <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...distributors} />
+          <TextField {...deviceTypeId} />
         </div>
         <div className={classes.formGroup}>
           <label>
-          KHách hàng <em>（Bắt Buộc）</em>
+            Code <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...client} />
+          <TextField {...code} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            SĐT <em>（Bắt Buộc）</em>
+            Imei <em>（Bắt Buộc）</em>
           </label>
-          <TextField {...NumberPhone} />
-        </div>
-        <div className={classes.formGroup}>
-          <label>
-            Email <em>（Bắt Buộc）</em>
-          </label>
-          <TextField {...email} disabled={isNew ? false : true} />
-        </div>
-        <div className={classes.formGroup}>
-          <label>
-            Địa chỉ <em>（Bắt Buộc）</em>
-          </label>
-          <TextField {...address} />
-        </div>
-        <div className={classes.formGroup}>
-          <label>
-          Số xe <em>（Bắt Buộc）</em>
-          </label>
-          <TextField {...vehicle} />
-        </div>
-        <div className={classes.formGroup}>
-          <label>
-          Số thiết bị <em>（Bắt Buộc）</em>
-          </label>
-          <TextField {...device} />
-        </div>
-        <div className={classes.formGroup}>
-          <label>
-          Số lượng sim <em>（Bắt Buộc）</em>
-          </label>
-          <TextField {...sim} />
+          <TextField {...imei} />
         </div>
         
         {/* row submit */}
