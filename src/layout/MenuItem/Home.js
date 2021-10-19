@@ -1,3 +1,14 @@
+import React from 'react';
 export default function Home() {
-  return <h2>Khách Hàng</h2>;
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%'
+      }}>
+      <h2> wellcom to viet-map</h2>
+    </div>
+  );
 }

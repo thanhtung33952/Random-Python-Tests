@@ -6,7 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
 // pages
-// const HomePage = lazy(() => import('./layout/MenuItem/Home'));
+const HomePage = lazy(() => import('./layout/MenuItem/Home'));
 const Customers = lazy(() => import('./layout/MenuItem/Customer'));
 const FormCustomer = lazy(() => import('./page/Form/FormCustomer'));
 const Device = lazy(() => import('./layout/MenuItem/Device')); 
@@ -26,12 +26,13 @@ const FormDeviceType = lazy(() => import('./page/Form/FormDeviceType'));
 
 // constant
 var indexRoutes = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: HomePage,
-  //   protected: true
-  // },
+  {
+    path: '/',
+    name: 'Home',
+    component: HomePage,
+    protected: true,
+    type: 'hide',
+  },
   {
     path: '/Khach-Hang',
     name: 'Khách Hàng',
