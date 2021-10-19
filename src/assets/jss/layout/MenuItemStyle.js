@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
 	root: {
 		padding: '0 16px',
 		'& .super-app-theme--header': {
@@ -124,14 +124,14 @@ export default makeStyles((theme) => ({
 		marginRight: 22,
 		marginBottom: 10,
 		'& label': {
-		  width: '35%',
-		  fontSize: 13,
-		},
-		'& $inputControl': {
-		  '& input': {
-			padding: '5px 8px',
-		  },
-		},
+      width: '35%',
+      fontSize: 13,
+    },
+    '& $inputControl': {
+      '& input': {
+      padding: '5px 8px',
+      },
+    },
   },
   search: {
     // border: '1px solid gray',

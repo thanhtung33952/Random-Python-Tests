@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import * as moment from 'moment';
@@ -137,7 +138,7 @@ const [open, setOpen] = useState(false);
   //     setData(result);
   // };
   // open popup
-  const handleClickOpen = request => {
+  const handleClickOpen = () => {
     // setRequestSelected(request);
     // console.log(request);
     setOpen(true);
