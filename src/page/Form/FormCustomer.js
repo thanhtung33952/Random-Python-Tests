@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import clsx from "clsx";
 // constant
 // import { apiRoot } from 'constant/index.js';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { isEmail, isNullOrEmpty, isNullOrUndefined } from '../../utils/helpers';
 
 // material component
@@ -39,7 +39,7 @@ import useStyles from '../../assets/jss/Page/FormCustomer';
 export default function FormCustomer() {
   const classes = useStyles();
   // mode insert/update
-  let { customer_id } = useParams();
+  // let { customer_id } = useParams();
   const [isNew, setNewUser] = useState(true);
   const [userData, setUserData] = useState(''); // userName, email, role, departmentId, approvalGroupId
   // data form

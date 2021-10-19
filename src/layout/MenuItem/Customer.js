@@ -46,7 +46,7 @@ export default function Customer() {
   const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [requestSelected, setRequestSelected] = useState();
+  // const [requestSelected, setRequestSelected] = useState();
   // const [cookies] = useCookies(['AuthenticationWorkflow']);
   // const userInfo = cookies.AuthenticationWorkflow;
   // const [openSampleRequest, setOpenSampleRequest] = useState(false);
@@ -141,7 +141,7 @@ export default function Customer() {
   // };
   // open popup
   const handleClickOpen = request => {
-    setRequestSelected(request);
+    // setRequestSelected(request);
     // console.log(request);
     setOpen(true);
   };
@@ -197,7 +197,7 @@ export default function Customer() {
   // render draft
   const customer = [];
   data.length > 0 &&
-  data.map((row, i) => {
+  data.map((row, i) => (
     customer.push (row = {
       id: row.id,
       stt: i + 1,
@@ -208,8 +208,8 @@ export default function Customer() {
       phone: row.phone,
       email: row.email,
       description: row.description
-    });
-  });
+    })
+  ));
   // render columns
   const columns = [
     {

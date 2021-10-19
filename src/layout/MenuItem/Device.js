@@ -44,7 +44,7 @@ const classes = useStyles();
 const [isLoading, setisLoading] = useState(false);
 const [data, setData] = useState([]);
 const [open, setOpen] = useState(false);
-const [requestSelected, setRequestSelected] = useState();
+// const [requestSelected, setRequestSelected] = useState();
 // const [cookies] = useCookies(['AuthenticationWorkflow']);
 // const userInfo = cookies.AuthenticationWorkflow;
 // const [openSampleRequest, setOpenSampleRequest] = useState(false);
@@ -138,7 +138,7 @@ const [requestSelected, setRequestSelected] = useState();
   // };
   // open popup
   const handleClickOpen = request => {
-    setRequestSelected(request);
+    // setRequestSelected(request);
     // console.log(request);
     setOpen(true);
   };
@@ -191,22 +191,18 @@ const [requestSelected, setRequestSelected] = useState();
       </Button>
     )
   }
-  // select request
-  const handleSelectRow = target => {
-    setRequestSelected(target.data);
-  }
   // render Devices
   const Devices = [];
   data.length > 0 &&
-  data.map((row, i) => {
+  data.map((row, i) => (
     Devices.push (row = {
       id: row.id,
       stt: i + 1,
       deviceTypeId: row.deviceTypeId,
       code: row.code,
       imei: row.imei
-    });
-  });
+    })
+  ));
   // render columns
   // console.log(data)
   const columns = [
@@ -345,7 +341,7 @@ const [requestSelected, setRequestSelected] = useState();
                   className={classes.container}
                   columns={columns}
                   rows={Devices}
-                  onRowSelected={handleSelectRow}
+                  // onRowSelected={handleSelectRow}
                   loading={isLoading}
                   // hideFooterSelectedRowCount={true}
                   components={{

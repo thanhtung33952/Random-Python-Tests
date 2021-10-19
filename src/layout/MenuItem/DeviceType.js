@@ -79,12 +79,12 @@ export default function DeviceType() {
     getData();
   }, []);
 
-  console.log(deviceTypeSelected)
+  // console.log(deviceTypeSelected)
   // delete User
   const deteleDeviceType = async () => {
     setStatusSubmit({ ...statusSubmit, isLoading: true });
     if (isNullOrUndefined(deviceTypeSelected)) return;
-    console.log(deviceTypeSelected)
+    // console.log(deviceTypeSelected);
     // call api delete
     const result = await callAPIDeleteDeviceTypes(deviceTypeSelected.id);
     // Failed

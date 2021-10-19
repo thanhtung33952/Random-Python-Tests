@@ -83,9 +83,8 @@ export default function FormDeviceType() {
     }
 
     getDataDeviceType();
-  }, []);
+  }, [deviceType_id]);
 
-// console.log(deviceTypeData)
   // save deviceType data
   const handleSave = async () => {
     // if (!validation()) return;

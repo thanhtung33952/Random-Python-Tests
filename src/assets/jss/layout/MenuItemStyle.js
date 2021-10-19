@@ -1,4 +1,4 @@
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
 	root: {
@@ -138,9 +138,9 @@ export default makeStyles((theme) => ({
     flex: 1,
     position: 'relative',
     borderRadius: 10,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    // backgroundColor: fade(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    //   backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: 40,
     marginLeft: 0,
