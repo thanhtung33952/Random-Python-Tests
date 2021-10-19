@@ -228,7 +228,7 @@ export default function DeviceType() {
     return (
       <GridOverlay>
         <div style={{align: 'center'}}>
-          không có dữ liệu.
+          không có dữ liệu của loại thiết bị.
         </div>
       </GridOverlay>
     );
@@ -334,7 +334,6 @@ async function getDeviceTypes(data) {
 
 //  call API Delete DeviceTypes
 async function callAPIDeleteDeviceTypes(id, data) {
-  // console.log(id)
   if (isNullOrEmpty(id)) return;
   try {
     const res = await axios.delete(`${apiRoot}/device-types/${id}`, data);
