@@ -271,7 +271,7 @@ export default function FormDeviceType() {
   );
 }
 
-function useFormInput(initValue, isRequire, isEmailControl = false) {
+function useFormInput(initValue, isRequire) {
   const classes = useStyles();
   const [value, setValue] = useState(initValue);
   const [isFirst, setIsFirst] = useState(true);

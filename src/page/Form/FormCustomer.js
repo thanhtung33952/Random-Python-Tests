@@ -40,8 +40,13 @@ export default function FormCustomer() {
   const classes = useStyles();
   // mode insert/update
   // let { customer_id } = useParams();
-  const [isNew, setNewUser] = useState(true);
-  const [userData, setUserData] = useState(''); // userName, email, role, departmentId, approvalGroupId
+  const [
+    isNew,
+    // setNewUser
+  ] = useState(true);
+  const [userData,
+    // setUserData
+  ] = useState(''); // userName, email, role, departmentId, approvalGroupId
   // data form
   const deviceId = useFormInput(
     !isNullOrUndefined(userData) && !isNullOrEmpty(userData)
@@ -116,7 +121,9 @@ export default function FormCustomer() {
   // const [users, setUsers] = useState([]);
   // const [userSelect, setUserSelect] = useState([]);
   // // flag submit
-  const [statusSubmit, setStatusSubmit] = useState({
+  const [statusSubmit,
+    // setStatusSubmit
+  ] = useState({
     status: 0, // -1: error, 1: success
     isLoading: false,
     isLoading2: false,
