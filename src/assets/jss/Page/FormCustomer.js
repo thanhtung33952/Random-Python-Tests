@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { rowSubmit, btnCance } from '../../common';
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
   root: {},
   titleForm: {
     fontWeight: 600,
