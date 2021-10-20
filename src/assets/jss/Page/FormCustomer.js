@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { rowSubmit, btnCance } from '../../common';
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   root: {},
   titleForm: {
     fontWeight: 600,
@@ -84,7 +84,7 @@ export default makeStyles(() => ({
     zIndex: 99999,
   },
   iconProgress: {
-    // color: theme.palette.grey.light,
+    color: theme.palette.grey.light,
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -92,12 +92,12 @@ export default makeStyles(() => ({
     marginLeft: -12,
   },
   msgError: {
-    // color: theme.palette.pink.main,
+    color: theme.palette.pink.main,
     paddingRight: 50,
     paddingTop: 15,
   },
   msgSuc: {
-    // color: theme.palette.green.main,
+    color: theme.palette.green.main,
     paddingRight: 50,
     paddingTop: 15,
   },

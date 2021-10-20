@@ -1,7 +1,7 @@
 const lightBlue = require('@material-ui/core/colors/lightBlue');
 const yellow = require('@material-ui/core/colors/yellow');
-// const muiTheme = require('theme');
-// const theme = muiTheme.default;
+const muiTheme = require('../theme');
+const theme = muiTheme.default;
 // Colors
 const infoColor = lightBlue.default[500];
 const warningColor = yellow.default[500];
@@ -23,11 +23,23 @@ const rowSubmit = {
   },
 };
 const btnCance = {
-  // backgroundColor: theme.palette.pink.main,
+  backgroundColor: theme.palette.blue.main,
   color: '#fff',
   marginLeft: 15,
   '&:hover': {
-    // backgroundColor: theme.palette.pink.light,
+    backgroundColor: theme.palette.blue.light,
+  },
+};
+
+const rowSubmitPopup = {
+  justifyContent: 'center',
+  marginBottom: 8,
+  '& button': {
+    minWidth: 80,
+    minHeight: 32,
+    padding: '0 10px',
+    margin: '0 10px',
+    fontSize: 15,
   },
 };
 
@@ -39,4 +51,5 @@ export {
   MobileBreakpoint,
   rowSubmit,
   btnCance,
+  rowSubmitPopup,
 };

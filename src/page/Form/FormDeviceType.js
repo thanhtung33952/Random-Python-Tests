@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import classNames from 'classnames';
 import clsx from "clsx";
+
 // constant
 import { apiRoot } from '../../constant/index';
 import { useParams } from 'react-router-dom';
@@ -23,7 +24,7 @@ import PopupQuestion from '../../component/Popup/PopupQuestion';
 
 // jss
 import useStyles from '../../assets/jss/Page/FormCustomer';
-// import { folderRoot } from '../../constant/index';
+import { folderRoot } from '../../constant/index';
 
 export default function FormDeviceType() {
   const classes = useStyles();
@@ -31,16 +32,16 @@ export default function FormDeviceType() {
   let { deviceType_id } = useParams();
   const [isNew, setNewDeviceType] = useState(true);
   const [deviceTypeData, setDeviceTypeData] = useState(''); // name, description
-  // console.log(deviceTypeData)
+  // console.log(deviceTypeData.data)
   // data form
   const name = useFormInput(
     !isNullOrUndefined(deviceTypeData) && !isNullOrEmpty(deviceTypeData)
-      ? deviceTypeData : '',
+      ? deviceTypeData.data.name : '',
       true
   );
   const description = useFormInput(
     !isNullOrUndefined(deviceTypeData) && !isNullOrEmpty(deviceTypeData)
-      ? deviceTypeData : '',
+      ? deviceTypeData.data.description : '',
       true
   );
   // flag submit
@@ -61,18 +62,18 @@ export default function FormDeviceType() {
 
     // get data DeviceType (nếu url có DeviceType id)
     async function getDataDeviceType(DeviceTypeId) {
-      console.log(DeviceTypeId)
+      // console.log(DeviceTypeId)
       try {
         const res = await axios.get(`${apiRoot}/device-types/${DeviceTypeId}`);
-        console.log(res)
+        // console.log(res)
         // error
         if (res.status !== 200) {
           return;
         }
         // success
         const result = res.data;
-        console.log(res.data.data)
-        console.log(result)
+        // console.log(res.data.data)
+        // console.log(result)
         setDeviceTypeData(result);
       } catch (error) {
         return;
@@ -131,7 +132,7 @@ export default function FormDeviceType() {
       isLoading: false,
       msg: 'Cập nhật đã hoàn tất.'
     });
-    location.reload();
+    // location.reload();
   };
 
   // handle add new deviceType
@@ -144,9 +145,9 @@ export default function FormDeviceType() {
       name: name.value,
       description: description.value,
     };
-    console.log(data)
+    // console.log(data)
     const result = await callAPIDeviceType(data);
-    console.log(result.data);
+    // console.log(result.data);
     // error
     if (!result) {
       setStatusSubmit({
@@ -168,10 +169,10 @@ export default function FormDeviceType() {
     //   return;
     // }
 
-    setDeviceTypeData({
-      ...deviceTypeData,
-      id: result.id
-    });
+    // setDeviceTypeData({
+    //   ...deviceTypeData,
+    //   id: result.data.id
+    // });
     setStatusSubmit({
       ...statusSubmit,
       status: 1,
@@ -179,7 +180,7 @@ export default function FormDeviceType() {
       msg: 'Đăng ký mới đã hoàn tất.'
     });
     // mode insert nên sau khi insert thành công show question redirect url update user or ridirect url list deviceType
-    // window.location.href = `${folderRoot}/device-types/${result.id}`;
+    window.location.href = `${folderRoot}Loai-Thiet-Bi/update/${result.data.id}`;
     // setOpenPopupQuestion(true);
   };
   
@@ -312,7 +313,7 @@ function useFormInput(initValue, isRequire) {
 
 // insert new DeviceType
 async function callAPIDeviceType(data, DeviceTypeId) {
-  console.log(DeviceTypeId)
+  // console.log(DeviceTypeId)
   try {
     let res;
     if (DeviceTypeId) {
@@ -327,7 +328,7 @@ async function callAPIDeviceType(data, DeviceTypeId) {
       return false;
     }
     // success
-    console.log(res.data)
+    // console.log(res.data)
     return res.data;
   } catch (error) {
     const result = error.response;

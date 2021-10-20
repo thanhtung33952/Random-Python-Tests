@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 // import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
+// import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
   DataGrid,
   GridOverlay,
@@ -79,8 +79,7 @@ export default function DeviceType() {
     getData();
   }, []);
 
-  // console.log(deviceTypeSelected)
-  // delete User
+  // delete Device type
   const deteleDeviceType = async () => {
     setStatusSubmit({ ...statusSubmit, isLoading: true });
     if (isNullOrUndefined(deviceTypeSelected)) return;
@@ -138,26 +137,27 @@ export default function DeviceType() {
       let val = e.target.value;
       setData({ ...data, [name]: val });
   };
-  const renderTitleLink = (params) => {
-      return (
-      <Link
-          to={`${folderRoot}Loai-Thiet-Bi/update/${params.row.id}`}
-          // target="_blank"
-          style={{color: '#4ca4fb', textDecoration: 'none'}}
-      >
-          {params.value}
-      </Link>
-      )
-  };
   const renderChangleButton = (params) => {
     return (
-      <Button
-        variant="contained"
-        className={clsx(classes.btnDelete, classes.mLeft10)}
-        onClick={() => handleClickOpen(params.row)}
-      >
-        <DeleteIcon />
-      </Button>
+      <React.Fragment>
+        <Button
+          components={Link}
+          variant="contained"
+          className={clsx(classes.btnDelete, classes.mRight10)}
+          href={`${folderRoot}Loai-Thiet-Bi/update/${params.row.id}`}
+        >
+          {/*<DeleteIcon />*/}
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.btnDelete}
+          onClick={() => handleClickOpen(params.row)}
+        >
+          {/*<DeleteIcon />*/}
+          Xóa
+        </Button>
+      </React.Fragment>
     )
   }
 
@@ -178,34 +178,33 @@ export default function DeviceType() {
     {
       field: 'stt',
       headerName: 'No.',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       width: 100,
       headerClassName: 'super-app-theme--header',
     },
     {
       field: 'name',
-      headerName: 'Loại Thiết Bị',
-      headerAlign: 'center',
-      align: 'center',
+      headerName: 'Loại thiết bị',
+      // headerAlign: 'center',
+      // align: 'center',
       width: 250,
       headerClassName: 'super-app-theme--header',
-      renderCell: renderTitleLink,
     },
     {
       field: 'description',
-      headerName: 'Miêu Tả',
-      headerAlign: 'center',
-      align: 'center',
+      headerName: 'Miêu tả',
+      // headerAlign: 'center',
+      // align: 'center',
       flex: 1,
       minWidth: 300,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'Xóa',
-      headerAlign: 'center',
-      align: 'center',
-      width: 150,
+      field: 'Hành động',
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 180,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
@@ -287,7 +286,7 @@ export default function DeviceType() {
                   rows={DeviceTypes}
                   // onRowSelected={handleSelectRow}
                   loading={isLoading}
-                  // hideFooterSelectedRowCount={true}
+                  hideFooterSelectedRowCount={true}
                   components={{
                     LoadingOverlay: CustomLoadingOverlay,
                     NoRowsOverlay: CustomNoRowsOverlay,

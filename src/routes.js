@@ -49,7 +49,7 @@ var indexRoutes = [
     // protected: true
   },
   {
-    path: `/Khach-Hang/update/:user_id`,
+    path: `/Khach-Hang/update/:customer_id`,
     name: 'Update Customer.',
     component: FormCustomer,
     // protected: true,

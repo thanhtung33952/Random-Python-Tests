@@ -1,17 +1,21 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { StyledEngineProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import App from './App';
 import Dashboard from './layout/Dashboard';
+import theme from './theme';
 
 ReactDOM.render(
   <StyledEngineProvider>
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <Switch>
-        <Route path="/" component={Dashboard} />
-      </Switch>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Switch>
+          <Route path="/" component={Dashboard} />
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
   </StyledEngineProvider>,
   document.querySelector("#root")
 );

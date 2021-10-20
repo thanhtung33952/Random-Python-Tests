@@ -27,7 +27,7 @@ export default function PopupQuestion(props) {
         <DialogActions className={classes.rowSubmit}>
           <Button
             variant="contained"
-            color="secondary"
+            className={classes.btnYes}
             onClick={() => callback('yes')}
           >
             Yes

@@ -1,20 +1,15 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { alpha , makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
 	root: {
 		padding: '0 16px',
 		'& .super-app-theme--header': {
-			// backgroundColor: '#4A4E69',
 			color: '#000',
 			fontSize: '1rem',
-			display: 'block',
-			borderRight: 'none !important',
-			outline: 'none !important',
-			padding: 0,
+			padding: '0 5px',
 		},
 		'& .MuiDataGrid-root':{
 			'& .MuiDataGrid-columnsContainer': {
-				// background: '#4a4e69',
 				cursor: 'pointer',
 				lineHeight: '50px !important',
 				minHeight: '50px !important',
@@ -24,6 +19,7 @@ export default makeStyles(() => ({
 				top: '50px !important'
 			},
 			'& .MuiDataGrid-cell': {
+        padding: '0 10px',
 				overflow: 'auto',
 				overflowY: 'hidden !important',
 				textOverflow: 'inherit',
@@ -42,15 +38,11 @@ export default makeStyles(() => ({
 					backgroundColor: '#918f8f',
 					outline: '1px solid slategrey'
 				},
-				// '& .MuiDataGrid-columnsContainer': {
-				// 	padding: '0 10px'
-				// },
-				// '& .MuiDataGrid-columnHeaderWrapper': {
-				// 	padding: '0 10px'
-				// }
-
 			}
 		},
+    '& .MuiDataGrid-columnHeaderTitle': {
+      fontSize: '18px'
+    },
 		'& .super-app-theme--cell': {
 			fontWeight: '600',
 		},
@@ -70,15 +62,11 @@ export default makeStyles(() => ({
 		'& .MuiTablePagination-actions': {
 			marginRight: 20
 		},
-		// '& .makeStyles-root-31': {
-		// 	padding: '8px 20px !important',
-		// },
 	},
   container: {
+    padding: '0 28px',
     height: 'calc(100vh - 132px)',
     boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px',
-	// borderLeft: '15px solid transparent !important',
-	// borderRight: '15px solid transparent !important'
   },
 	rowTitle: {
 		display: 'flex',
@@ -98,19 +86,13 @@ export default makeStyles(() => ({
     margin: '10px 40px 10px 0',
     float: 'right',
     fontWeight: 600,
-    backgroundColor: '#4ca4fb',
+    backgroundColor: theme.palette.blue.main,
     fontSize: 14,
     textTransform: 'uppercase',
     '&:hover': {
-      backgroundColor: '#4ca4fb',
+      backgroundColor: theme.palette.blue.light,
     },
   },
-	btnColor: {
-		background: '#1ebd1e',
-    '&:hover': {
-      backgroundColor: '#1ebd1e',
-    },
-	},
 	btnIcon: {
 		marginLeft: 15
 	},
@@ -121,44 +103,59 @@ export default makeStyles(() => ({
 		flex: 1,
 		verticalAlign: 'middle',
 		alignItems: 'center',
-		marginRight: 22,
+		// marginRight: 22,
 		marginBottom: 10,
 		'& label': {
-      width: '35%',
-      fontSize: 13,
+		width: '35%',
+		fontSize: 13,
     },
-    '& $inputControl': {
-      '& input': {
-      padding: '5px 8px',
-      },
-    },
+    // '& $inputControl': {
+    //   '& input': {
+    //   padding: '5px 8px',
+    //   },
+    // },
   },
   search: {
     // border: '1px solid gray',
     flex: 1,
     position: 'relative',
     borderRadius: 10,
-    // backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha (theme.palette.common.white, 0.15),
     '&:hover': {
-    //   backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha (theme.palette.common.white, 0.25),
     },
     marginRight: 40,
     marginLeft: 0,
     marginTop: 20,
   },
   btnDelete: {
-    // marginRight: 10,
     height: 30,
-    borderRadius: '50%',
     minWidth: 0,
     minHeight: 0,
     maxHeight: 30,
-    maxWidth: 30,
+    maxWidth: 50,
     color: '#fff',
-    backgroundColor: '#f44336',
+    backgroundColor: theme.palette.redColor.main,
     textTransform: 'none',
     '&:hover': {
-      backgroundColor: '#d32f2f',
+      backgroundColor: theme.palette.redColor.light,
+    },
+    '& span': {
+      padding: '0 10px'
+    }
+  },
+  mRight10: {
+    marginRight: 10,
+    backgroundColor: theme.palette.blue.main,
+    maxWidth: 90,
+    '&:hover': {
+      backgroundColor: theme.palette.blue.light,
     },
   },
+  msgSuc: {
+	color: theme.palette.green.main
+  },
+  msgError: {
+	color: theme.palette.redColor.main
+  }
 }));

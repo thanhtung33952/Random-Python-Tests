@@ -14,8 +14,6 @@ import Button from '@material-ui/core/Button';
 // import Notification from 'components/Notification';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-// import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
   DataGrid,
   GridOverlay,
@@ -25,7 +23,8 @@ import {
 
 // constant
 import { apiRoot, folderRoot } from '../../constant/index';
-
+// helpers
+import { isNullOrUndefined, isNullOrEmpty } from '../../utils/helpers';
 // component common
 import Wrapper from '../../component/Wrapper/Wrapper';
 import PopupQuestion from '../../component/Popup/PopupQuestion';
@@ -41,16 +40,23 @@ import SearchInput from '../../component/SearchForm/SearchInput';
 import useStyles from '../../assets/jss/layout/MenuItemStyle';
 
 export default function Device() {
-const classes = useStyles();
-const [isLoading, setisLoading] = useState(false);
-const [data, setData] = useState([]);
-const [open, setOpen] = useState(false);
-// const [requestSelected, setRequestSelected] = useState();
-// const [cookies] = useCookies(['AuthenticationWorkflow']);
-// const userInfo = cookies.AuthenticationWorkflow;
-// const [openSampleRequest, setOpenSampleRequest] = useState(false);
-// const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
-// let token = cookies.AuthenticationWorkflow.tokenAccess;
+  const classes = useStyles();
+  const [isLoading, setisLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [deviceSelected, setDeviceSelected] = useState();
+  // const [cookies] = useCookies(['AuthenticationWorkflow']);
+  // const userInfo = cookies.AuthenticationWorkflow;
+  // const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
+  // let token = cookies.AuthenticationWorkflow.tokenAccess;
+
+  // flag submit
+  const [statusSubmit, setStatusSubmit] = useState({
+    status: 0, // -1: error, 1: success
+    isLoading: false,
+    isLoading2: false,
+    msg: ''
+  });
 
   useEffect(() => {
     async function getData() {
@@ -74,72 +80,46 @@ const [open, setOpen] = useState(false);
     getData();
   }, []);
 
+  // delete Device
+  const deteleDevice = async () => {
+    setStatusSubmit({ ...statusSubmit, isLoading: true });
+    if (isNullOrUndefined(deviceSelected)) return;
+    // console.log(deviceSelected);
+    // call api delete
+    const result = await callAPIDeleteDevices(deviceSelected.id);
+    // Failed
+    if (!result) {
+      setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
+      setOpen(false);
+      return;
+    }
+
+    // success
+    setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
+    let newArr = [...data]; // copying the old data array
+    let index = newArr.findIndex(x => x.id === deviceSelected.id);
+    if (index !== -1) {
+      newArr.splice(index, 1);
+      setData(newArr);
+      setOpen(false);
+    }
+  };
+
+  // on submit search Device by key
+  const handleSearchDevice = async (formValue, callback) => {
+    // call api search user
+    const result = await getDevices(formValue);
+    // console.log(result)
+    if (!result) {
+      callback();
+      return;
+    }
+    callback();
+    setData(result.items);
+  };
   // open popup
-  // const handleClickOpenSample = () => {
-  //     setOpenSampleRequest(true);
-  // };
-
-  // Close popup
-  // const handleCloseSample = () => {
-  //     setOpenSampleRequest(false);
-  // };
-
-  // const handleClickOpen = draft => {
-  //   setDraftSelected(draft);
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-  // delete User
-  // const deteleDraft = async () => {
-  //   setStatusSubmit({ ...statusSubmit, isLoading: true });
-  //   if (isNullOrUndefined(draftSelected)) return;
-  //   // call api delete
-  //   const result = await callAPIDeleteDraft(draftSelected.id);
-  //   // console.log(data);
-  //   // Failed
-  //   if (!result) {
-  //     setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
-  //     setOpen(false);
-  //     return;
-  //   }
-
-  //   // success
-  //   setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
-  //   let newArr = [...data]; // copying the old data array
-  //   let index = newArr.findIndex(x => x.id === draftSelected.id);
-  //   if (index !== -1) {
-  //     newArr.splice(index, 1);
-  //     setData(newArr);
-  //     setOpen(false);
-  //   }
-  // };
-  // const handleAfterDelete = flag => {
-  //   setOpen(false);
-  //   // flag: yes||no
-  //   if (flag === 'yes') {
-  //     deteleDraft();
-  //   }
-  // };
-
-  // on submit search draft by key
-  // const handleSearchDraft = async (formValue, callback) => {
-  //     // if (isNullOrUndefined(token)) return;
-  //     // console.log(token)
-  //     // call api search draft
-  //     const result = await callApiSearch(formValue);
-  //     if (!result) {
-  //     callback();
-  //     return;
-  //     }
-  //     callback();
-  //     setData(result);
-  // };
-  // open popup
-  const handleClickOpen = () => {
-    // setRequestSelected(request);
+  const handleClickOpen = (deive) => {
+    setDeviceSelected(deive);
     // console.log(request);
     setOpen(true);
   };
@@ -147,7 +127,7 @@ const [open, setOpen] = useState(false);
     setOpen(false);
     // flag: yes||no
     if (flag === 'yes') {
-      // deteleRequests();
+      deteleDevice();
     }
   };
   // Close popup
@@ -159,37 +139,25 @@ const [open, setOpen] = useState(false);
       setData({ ...data, [name]: val });
   };
 
-  //component button in list
-  // const renderClassification = (params) => {
-  //     return (
-  //     <span
-  //         className={classes.classification}
-  //         style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
-  //     >
-  //         {params.value}
-  //     </span>
-  //     )
-  // };
-  const renderTitleLink = (params) => {
-      return (
-      <Link
-          to={`${folderRoot}Thiet-Bi/${params.row.id}`}
-          // target="_blank"
-          style={{color: '#4ca4fb', textDecoration: 'none'}}
-      >
-          {params.value}
-      </Link>
-      )
-  };
   const renderChangleButton = (params) => {
     return (
-      <Button
-        variant="contained"
-        className={clsx(classes.btnDelete, classes.mLeft10)}
-        onClick={() => handleClickOpen(params.row)}
-      >
-        <DeleteIcon />
-      </Button>
+      <React.Fragment>
+        <Button
+          components={Link}
+          variant="contained"
+          className={clsx(classes.btnDelete, classes.mRight10)}
+          href={`${folderRoot}Thiet-Bi/update/${params.row.id}`}
+        >
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.btnDelete}
+          onClick={() => handleClickOpen(params.row)}
+        >
+          Xóa
+        </Button>
+      </React.Fragment>
     )
   }
   // render Devices
@@ -205,48 +173,47 @@ const [open, setOpen] = useState(false);
     })
   ));
   // render columns
-  // console.log(data)
   const columns = [
     {
       field: 'stt',
       headerName: 'No.',
-      headerAlign: 'center',
-      align: 'center',
-      width: 150,
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 100,
       headerClassName: 'super-app-theme--header',
     },
     {
       field: 'deviceTypeId',
       headerName: 'Id loại thiết bị',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       width: 200,
       headerClassName: 'super-app-theme--header',
-      renderCell: renderTitleLink,
+      // renderCell: renderTitleLink,
     },
     {
       field: 'code',
       headerName: 'Code',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       width: 200,
       headerClassName: 'super-app-theme--header',
     },
     {
       field: 'imei',
       headerName: 'Imei',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       flex: 1,
       minWidth: 200,
       headerClassName: 'super-app-theme--header',
-      cellClassName: 'super-app-theme--cell--underline',
+      // cellClassName: 'super-app-theme--cell--underline',
     },
     {
-      field: 'Xóa',
-      headerAlign: 'center',
-      align: 'center',
-      width: 150,
+      field: 'Hành động',
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 200,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
@@ -274,13 +241,7 @@ const [open, setOpen] = useState(false);
     </GridOverlay>
     );
   };
-  // const handleSelectRow = target => {
-  //   setDraftSelected(target.data);
-  // }  
-  // const closeNotification = () => {
-  //     setFlagApi({ ...flagApi, openMsg: false, msg: '' });
-  // };
-  // console.log(Devices.length)
+
   const CustomToolbar = () => {
     return (
       <div className={classes.formGroup}>
@@ -288,7 +249,7 @@ const [open, setOpen] = useState(false);
           <SearchInput
             autoFocus
             placeholder="Tìm trên danh sách thiết bị"
-            // onSubmit={handleSearchDraft}
+            onSubmit={handleSearchDevice}
             onChange={handleChangeField('search')}
           />
         </div>
@@ -307,23 +268,10 @@ const [open, setOpen] = useState(false);
           Danh sách thiết bị ({Devices.length})
         </Typography>
         <div className={classes.rowButtonAdd}>
-          {/*<Button
-            variant="contained"
-            className={clsx(classes.btnAdd, classes.btnColor)}
-            // href={`${folderRoot}admin/request`}
-            // onClick={() => handleClickOpenSample()}
-            // target="_blank"
-          >
-            nhập đại lý
-            <GroupAddIcon className={classes.btnIcon}/>
-          </Button>*/}
           <Button
             variant="contained"
             className={classes.btnAdd}
             href={`${folderRoot}Thiet-Bi/addnew`}
-            // href={`${folderRoot}admin/request`}
-            // onClick={() => handleClickOpenSample()}
-            // target="_blank"
           >
             tạo thiết bị
             <PersonAddIcon className={classes.btnIcon}/>
@@ -344,7 +292,7 @@ const [open, setOpen] = useState(false);
                   rows={Devices}
                   // onRowSelected={handleSelectRow}
                   loading={isLoading}
-                  // hideFooterSelectedRowCount={true}
+                  hideFooterSelectedRowCount={true}
                   components={{
                     LoadingOverlay: CustomLoadingOverlay,
                     NoRowsOverlay: CustomNoRowsOverlay,
@@ -369,17 +317,41 @@ const [open, setOpen] = useState(false);
   );
 }
 //  get Devices
-async function getDevices() {
+async function getDevices(data) {
+  // console.log(data)
+  let url = `${apiRoot}/devices?limit=1000000000`;
+  if (!isNullOrUndefined(data)) {
+    url = `${apiRoot}/devices?Search=${data.searchTerm}&limit=1000000000`;
+  }
   try {
-    const res = await axios.get(`${apiRoot}/`);
+    const res = await axios.get( url );
     // error
     if (res.status !== 200) {
       return null;
     }
-    // console.log(res.data);
+    // console.log(res.data.data.items);
     return res.data.data;
   } catch (error) {
     // console.log(error);
     return null;
+  }
+}
+
+//  call API Delete Devices
+async function callAPIDeleteDevices(id, data) {
+  if (isNullOrEmpty(id)) return;
+  try {
+    const res = await axios.delete(`${apiRoot}/devices/${id}`, data);
+    // error
+    if (res.status !== 200) {
+      return false;
+    }
+    // success
+    return true;
+  } catch (error) {
+    if (error.response.status === 400 && error.response.data.code === -2) {
+      return -2;
+    }
+    return false;
   }
 }

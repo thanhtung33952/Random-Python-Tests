@@ -1,7 +1,7 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 // A theme with custom primary and secondary color.
 // It's optional.
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       light: '#333649',
@@ -56,11 +56,29 @@ const theme = createMuiTheme({
       light: '#b26600',
       main: '#FF9300',
       dark: '#ffa833'
+    },
+    // màu đỏ
+    redColor: {
+      light: '#ff6666',
+      main: '#ff0000',
+      dark: '#f44336'
+    },
+    // màu xanh dương
+    blue: {
+      light: '#4ca4fb',
+      main: '#1890ff',
+      dark: '#3f51b5'
+    },
+    white: {
+      main: '#fff',
+    },
+    black: {
+      main: '#000',
     }
   },
   typography: {
     useNextVariants: true
-  }
+  },
 });
 
 export default theme;

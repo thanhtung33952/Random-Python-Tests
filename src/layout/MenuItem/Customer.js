@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 // import Snackbar from '@material-ui/core/Snackbar';
 // import Notification from 'components/Notification';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DeleteIcon from '@mui/icons-material/DeleteForever';
+// import DeleteIcon from '@mui/icons-material/DeleteForever';
 import Divider from '@mui/material/Divider';
 import {
   DataGrid,
@@ -33,7 +33,7 @@ import PopupQuestion from '../../component/Popup/PopupQuestion';
 // import PopupListRequestSample from 'components/Popup/PopupListRequestSample';
 
 // helpers
-// import { isNullOrUndefined } from '../../utils/helpers';
+import { isNullOrUndefined, isNullOrEmpty } from '../../utils/helpers';
 
 //component customer
 import SearchInput from '../../component/SearchForm/SearchInput';
@@ -46,13 +46,18 @@ export default function Customer() {
   const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-  // const [requestSelected, setRequestSelected] = useState();
+  const [customSelected, setCustomSelected] = useState();
   // const [cookies] = useCookies(['AuthenticationWorkflow']);
   // const userInfo = cookies.AuthenticationWorkflow;
-  // const [openSampleRequest, setOpenSampleRequest] = useState(false);
   // const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
   // let token = cookies.AuthenticationWorkflow.tokenAccess;
-
+  // flag submit
+  const [statusSubmit, setStatusSubmit] = useState({
+    status: 0, // -1: error, 1: success
+    isLoading: false,
+    isLoading2: false,
+    msg: ''
+  });
   useEffect(() => {
 
       async function getData() {
@@ -76,80 +81,54 @@ export default function Customer() {
       getData();
   }, []);
 
+  // delete Custom
+  const deteleCustom = async () => {
+    setStatusSubmit({ ...statusSubmit, isLoading: true });
+    if (isNullOrUndefined(customSelected)) return;
+    // console.log(customSelected);
+    // call api delete
+    const result = await callAPIDeleteCustomers(customSelected.id);
+    // Failed
+    if (!result) {
+      setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
+      setOpen(false);
+      return;
+    }
+
+    // success
+    setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
+    let newArr = [...data]; // copying the old data array
+    let index = newArr.findIndex(x => x.id === customSelected.id);
+    if (index !== -1) {
+      newArr.splice(index, 1);
+      setData(newArr);
+      setOpen(false);
+    }
+  };
+
+  // on submit search Device by key
+  const handleSearchCustom = async (formValue, callback) => {
+    // call api search user
+    const result = await getCustomers(formValue);
+    // console.log(result)
+    if (!result) {
+      callback();
+      return;
+    }
+    callback();
+    setData(result.items);
+  };
   // open popup
-  // const handleClickOpenSample = () => {
-  //     setOpenSampleRequest(true);
-  // };
-
-  // Close popup
-  // const handleCloseSample = () => {
-  //     setOpenSampleRequest(false);
-  // };
-
-  // const handleClickOpen = draft => {
-  //   setDraftSelected(draft);
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-  // delete User
-  // const deteleDraft = async () => {
-  //   setStatusSubmit({ ...statusSubmit, isLoading: true });
-  //   if (isNullOrUndefined(draftSelected)) return;
-  //   // call api delete
-  //   const result = await callAPIDeleteDraft(draftSelected.id);
-  //   // console.log(data);
-  //   // Failed
-  //   if (!result) {
-  //     setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
-  //     setOpen(false);
-  //     return;
-  //   }
-
-  //   // success
-  //   setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
-  //   let newArr = [...data]; // copying the old data array
-  //   let index = newArr.findIndex(x => x.id === draftSelected.id);
-  //   if (index !== -1) {
-  //     newArr.splice(index, 1);
-  //     setData(newArr);
-  //     setOpen(false);
-  //   }
-  // };
-  // const handleAfterDelete = flag => {
-  //   setOpen(false);
-  //   // flag: yes||no
-  //   if (flag === 'yes') {
-  //     deteleDraft();
-  //   }
-  // };
-
-  // on submit search draft by key
-  // const handleSearchDraft = async (formValue, callback) => {
-  //     // if (isNullOrUndefined(token)) return;
-  //     // console.log(token)
-  //     // call api search draft
-  //     const result = await callApiSearch(formValue);
-  //     if (!result) {
-  //     callback();
-  //     return;
-  //     }
-  //     callback();
-  //     setData(result);
-  // };
-  // open popup
-  const handleClickOpen = () => {
-    // setRequestSelected(request);
-    // console.log(request);
+  const handleClickOpen = (customer) => {
+    setCustomSelected(customer);
+    // console.log(customer);
     setOpen(true);
   };
   const handleAfterDelete = flag => {
     setOpen(false);
     // flag: yes||no
     if (flag === 'yes') {
-      // deteleRequests();
+      deteleCustom();
     }
   };
   // Close popup
@@ -161,39 +140,28 @@ export default function Customer() {
       setData({ ...data, [name]: val });
   };
 
-  //component button in list
-  // const renderClassification = (params) => {
-  //     return (
-  //     <span
-  //         className={classes.classification}
-  //         style={{backgroundColor: !isNullOrUndefined(params.row.color) ? params.row.color : '#f3f3f3'}}
-  //     >
-  //         {params.value}
-  //     </span>
-  //     )
-  // };
-  const renderTitleLink = (params) => {
-      return (
-      <Link
-          to={`${folderRoot}Khach-Hang/${params.row.id}`}
-          // target="_blank"
-          style={{color: '#4ca4fb', textDecoration: 'none'}}
-      >
-          {params.value}
-      </Link>
-      )
-  }
   const renderChangleButton = (params) => {
     return (
-      <Button
-        variant="contained"
-        className={clsx(classes.btnDelete, classes.mLeft10)}
-        onClick={() => handleClickOpen(params.row)}
-      >
-        <DeleteIcon />
-      </Button>
+      <React.Fragment>
+        <Button
+          components={Link}
+          variant="contained"
+          className={clsx(classes.btnDelete, classes.mRight10)}
+          href={`${folderRoot}Khach-hang/update/${params.row.id}`}
+        >
+          Chỉnh sửa
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.btnDelete}
+          onClick={() => handleClickOpen(params.row)}
+        >
+          Xóa
+        </Button>
+      </React.Fragment>
     )
   }
+  // console.log(data)
   // render draft
   const customer = [];
   data.length > 0 &&
@@ -214,34 +182,33 @@ export default function Customer() {
     {
       field: 'stt',
       headerName: 'No.',
-      headerAlign: 'center',
-      align: 'center',
-      width: 150,
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 100,
       headerClassName: 'super-app-theme--header',
     },
     {
       field: 'deviceId',
       headerName: 'Id thiết bị',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       width: 150,
       headerClassName: 'super-app-theme--header',
-      renderCell: renderTitleLink,
     },
     {
       field: 'name',
       headerName: 'name',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       width: 150,
       // renderCell: renderClassification,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'Address',
+      field: 'address',
       headerName: 'Địa chỉ',
-      headerAlign: 'center',
-      align: 'center',
+      // headerAlign: 'center',
+      // align: 'center',
       minWidth: 200,
       flex: 1,
       headerClassName: 'super-app-theme--header',
@@ -249,7 +216,7 @@ export default function Customer() {
     {
       field: 'phone',
       headerName: 'SĐT',
-      headerAlign: 'center',
+      // headerAlign: 'center',
       // align: 'center',
       width: 150,
       headerClassName: 'super-app-theme--header',
@@ -257,7 +224,7 @@ export default function Customer() {
     {
       field: 'email',
       headerName: 'Email',
-      headerAlign: 'center',
+      // headerAlign: 'center',
       // align: 'center',
       width: 150,
       headerClassName: 'super-app-theme--header',
@@ -265,7 +232,7 @@ export default function Customer() {
     {
       field: 'description',
       headerName: 'Miêu tả',
-      headerAlign: 'center',
+      // headerAlign: 'center',
       // align: 'center',
       width: 150,
       headerClassName: 'super-app-theme--header',
@@ -273,9 +240,9 @@ export default function Customer() {
     {
       field: 'Xóa', 
       headerName: 'Xóa',
-      headerAlign: 'center',
-      align: 'center',
-      width: 150,
+      // headerAlign: 'center',
+      // align: 'center',
+      width: 200,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
@@ -318,7 +285,7 @@ export default function Customer() {
             <SearchInput
               autoFocus
               placeholder="Tìm trên danh sách khách hàng"
-              // onSubmit={handleSearchDraft}
+              onSubmit={handleSearchCustom}
               onChange={handleChangeField('search')}
             />
           </div>
@@ -391,18 +358,43 @@ export default function Customer() {
     </div>
   );
 }
-//  get Customers
-async function getCustomers() {
+
+//  get Devices
+async function getCustomers(data) {
+  // console.log(data)
+  let url = `${apiRoot}/users?limit=1000000000`;
+  if (!isNullOrUndefined(data)) {
+    url = `${apiRoot}/users?Search=${data.searchTerm}&limit=1000000000`;
+  }
   try {
-    const res = await axios.get(`${apiRoot}/`);
+    const res = await axios.get( url );
     // error
     if (res.status !== 200) {
       return null;
     }
-    // console.log(res.data);
+    // console.log(res.data.data.items);
     return res.data.data;
   } catch (error) {
     // console.log(error);
     return null;
+  }
+}
+
+//  call API Delete Customers
+async function callAPIDeleteCustomers(id, data) {
+  if (isNullOrEmpty(id)) return;
+  try {
+    const res = await axios.delete(`${apiRoot}/users/${id}`, data);
+    // error
+    if (res.status !== 200) {
+      return false;
+    }
+    // success
+    return true;
+  } catch (error) {
+    if (error.response.status === 400 && error.response.data.code === -2) {
+      return -2;
+    }
+    return false;
   }
 }
