@@ -43,6 +43,11 @@ export default makeStyles((theme) => ({
     '& .MuiDataGrid-columnHeaderTitle': {
       fontSize: '18px'
     },
+    '& .MuiDataGrid-toolbarContainer': {
+      '& .MuiButton-textPrimary': {
+        color: theme.palette.green.light
+      }
+    },
 		'& .super-app-theme--cell': {
 			fontWeight: '600',
 		},
@@ -133,12 +138,14 @@ export default makeStyles((theme) => ({
     minWidth: 0,
     minHeight: 0,
     maxHeight: 30,
-    maxWidth: 50,
-    color: '#fff',
-    backgroundColor: theme.palette.redColor.main,
+    maxWidth: 30,
+    // color: '#fff',
+    color: theme.palette.redColor.main,
+    background:'transparent',
     textTransform: 'none',
+    borderRadius: "50rem",
     '&:hover': {
-      backgroundColor: theme.palette.redColor.light,
+      color: theme.palette.redColor.light,
     },
     '& span': {
       padding: '0 10px'
@@ -146,10 +153,10 @@ export default makeStyles((theme) => ({
   },
   mRight10: {
     marginRight: 10,
-    backgroundColor: theme.palette.blue.main,
-    maxWidth: 90,
+    color: theme.palette.blue.main,
+    maxWidth: 30,
     '&:hover': {
-      backgroundColor: theme.palette.blue.light,
+      color: theme.palette.blue.light,
     },
   },
   msgSuc: {

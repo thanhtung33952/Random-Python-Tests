@@ -16,7 +16,7 @@ export default makeStyles((theme) => ({
     marginBottom: 20,
     alignItems: 'center',
     '& label': {
-      width: '25%',
+      width: '20%',
       '& em': {
         color: 'red',
         fontStyle: 'inherit',
@@ -124,5 +124,5 @@ export default makeStyles((theme) => ({
   scrollPage :{
     overflowY: 'auto',
     height: 'calc(100vh - 220px)'
-  }
+  },
 }));

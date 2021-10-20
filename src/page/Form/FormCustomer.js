@@ -10,11 +10,13 @@ import { useParams } from 'react-router-dom';
 import { isEmail, isNullOrEmpty, isNullOrUndefined } from '../../utils/helpers';
 
 // material component
-// import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   Typography,
   TextField,
   Button,
+  FormControl,
+  Select,
+  FormHelperText
 } from '@material-ui/core';
 // icons
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -31,48 +33,50 @@ export default function FormCustomer() {
   let { customer_id } = useParams();
   const [ isNew, setNewCustomer ] = useState(true);
   const [ customersData, setCustomersData ] = useState(''); // userName, email, role, departmentId, approvalGroupId
-  // console.log(customersData.data)
+  // list  Device type
+  const [listCustomer, setListCustomer] = useState(null);
+  // console.log(customersData)
   // console.log(customersData.data.firstName)
   // data form
-  const deviceId = useFormInput(
+  const deviceId = useFormSelect(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.deviceId : '',
+      ? customersData.deviceId : undefined,
       true
   );
   const firstName = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.firstName : '',
+      ? customersData.firstName : '',
       true
   );
   
   const lastName = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.lastName : '',
+      ? customersData.lastName : '',
       true
   );
   
   const email = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.email : '',
+      ? customersData.email : '',
       true,
       true
   );
   
   const address = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.address : '',
+      ? customersData.address : '',
       true
   );
   
   const phone = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.phone : '',
+      ? customersData.phone : '',
       true
   );
   
   const description = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
-      ? customersData.data.description : '',
+      ? customersData.description : '',
       true
   );
   // flag submit
@@ -82,6 +86,8 @@ export default function FormCustomer() {
     isLoading2: false,
     msg: ''
   });
+  // check input
+  const [isValid, setInValid] = useState(false);
   // is open popup after save customer
   const [isOpenQuestion, setOpenPopupQuestion] = useState(false);
   // is open popup question update
@@ -90,7 +96,21 @@ export default function FormCustomer() {
   useEffect(() => {
     // check isNew user
     !isNullOrUndefined(customer_id) && setNewCustomer(false);
-
+    // get data Device type
+    async function getDataDevice() {
+      try {
+        const res = await axios.get(`${apiRoot}/devices`);
+        // error
+        if (res.status !== 200) {
+          return;
+        }
+        // success
+        // console.log(res.data.data.items);
+        setListCustomer(res.data.data.items);
+      } catch (error) {
+        return;
+      }
+    }
     // get data customer (nếu url có CustomerId id)
     async function getDataCustomer(CustomerId) {
       // console.log(CustomerId)
@@ -102,9 +122,9 @@ export default function FormCustomer() {
           return;
         }
         // success
-        const result = res.data;
+        const result = res.data.data;
         // console.log(res.data.data)
-        // console.log(result)
+        console.log(result)
         setCustomersData(result);
       } catch (error) {
         return;
@@ -114,12 +134,27 @@ export default function FormCustomer() {
       getDataCustomer(customer_id);
     }
 
+    getDataDevice();
     getDataCustomer();
   }, [customer_id]);
 
+  // check validation
+  useEffect(() => {
+    // check validation input
+    function checkValid() {
+      if (!validation()) {
+        setInValid(false);
+        return;
+      }
+
+      setInValid(true);
+    }
+
+    checkValid();
+  });
   // save customer data
   const handleSave = async () => {
-    // if (!validation()) return;
+    if (!validation()) return;
 
     // show question mode update
     if (!isNew) {
@@ -169,7 +204,7 @@ export default function FormCustomer() {
       isLoading: false,
       msg: 'Cập nhật đã hoàn tất.'
     });
-    // location.reload();
+    location.reload();
   };
 
   // handle add new Customers
@@ -211,6 +246,47 @@ export default function FormCustomer() {
     window.location.href = `${folderRoot}Khach-Hang/update/${result.data.id}`;
     // setOpenPopupQuestion(true);
   };
+  const handleChange = name => e => {
+    setCustomersData({
+      ...customersData,
+      [name]: e.target.value
+    });
+  };
+  // rending option user status
+  const optionCustomers = []
+  !isNullOrEmpty(listCustomer) &&
+  listCustomer.map(e => {
+    optionCustomers.push (
+      <option value={e.id} key={e.id}>
+        {e.imei}
+      </option>
+    );
+  });
+  // validation
+  const validation = () => {
+    if (isNew) {
+      if (
+        !isNullOrEmpty(deviceId.value) &&
+        !isNullOrEmpty(firstName.value) &&
+        !isNullOrEmpty(lastName.value) &&
+        !isNullOrEmpty(email.value) &&
+        isEmail(email.value) &&
+        !isNullOrEmpty(address.value) &&
+        !isNullOrEmpty(phone.value) &&
+        !isNullOrEmpty(description.value)
+      )
+      return true;
+    } else {
+      if (
+        customersData.firstName !== firstName.value ||
+        customersData.lastName !== lastName.value ||
+        customersData.address !== address.value ||
+        customersData.phone !== phone.value ||
+        customersData.description !== description.value
+      )
+      return true;
+    }
+  };
   return (
     <div className={classes.root}>
       <div className={classes.headFormGroup}>
@@ -221,43 +297,65 @@ export default function FormCustomer() {
       <div className={clsx(classes.formContent, classes.scrollPage)}>
         <div className={classes.formGroup}>
           <label>
-            Id thiết bị <em>（Bắt Buộc）</em>
+            Tên thiết bị <em>（*）</em>
           </label>
-          <TextField {...deviceId} disabled={isNew ? false : true} />
+          <div className={classes.rowInline}>
+            <FormControl
+              variant="outlined"
+              className={clsx(classes.formControlSelect, classes.dContents)}
+            >
+              <Select
+                native
+                style={{width: '100%'}}
+                onChange={handleChange('deviceId')}
+                {...deviceId}
+                disabled={isNew ? false : true}
+              >
+                <option aria-label="None" value="" />
+                {optionCustomers}
+              </Select>
+            </FormControl>
+          </div>
         </div>
+        {deviceId.value === '' ? 
+          <FormHelperText className={classes.selectErro}>
+            Đây là một mục bắt buộc.
+          </FormHelperText>
+          : '' 
+        }
         <div className={classes.formGroup}>
           <label>
-            FirstName <em>（Bắt Buộc）</em>
+            FirstName <em>（*）</em>
           </label>
           <TextField {...firstName} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            LastName <em>（Bắt Buộc）</em>
+            LastName <em>（*）</em>
           </label>
           <TextField {...lastName} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            Email <em>（Bắt Buộc）</em>
+            Email <em>（*）</em>
           </label>
           <TextField {...email} disabled={isNew ? false : true} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            Địa chỉ <em>（Bắt Buộc）</em>
+            Địa chỉ <em>（*）</em>
           </label>
           <TextField {...address} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            SĐT <em>（Bắt Buộc）</em>
+            SĐT <em>（*）</em>
           </label>
           <TextField {...phone} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            Miêu tả <em>（Bắt Buộc）</em>
+            Mô tả <em>（*）</em>
           </label>
           <TextField {...description} />
         </div>
@@ -277,7 +375,7 @@ export default function FormCustomer() {
               variant="contained"
               color="primary"
               onClick={handleSave}
-              // disabled={!isValid || statusSubmit.isLoading}
+              disabled={!isValid || statusSubmit.isLoading}
             >
               {isNew ? `Thêm mới` : `Chỉnh sửa`}
             </Button>
@@ -352,7 +450,33 @@ function useFormInput(initValue, isRequire, isEmailControl = false) {
     }
   };
 }
+function useFormSelect(initValue, isRequire) {
+  const classes = useStyles();
+  const [value, setValue] = useState(initValue);
+  const [isFirst, setIsFirst] = useState(true);
+  useEffect(() => {
+    if (!isNullOrEmpty(initValue)) {
+      setValue(initValue);
+    }
+  }, [initValue]);
 
+  function handleChange(e) {
+    setValue(e.target.value);
+
+    // check first time
+    if (isFirst) {
+      setIsFirst(!isFirst);
+    }
+  }
+  let error = isRequire && isNullOrEmpty(value) && !isFirst ? true : false;
+  return {
+    value: value,
+    error: error,
+    onChange: handleChange,
+    variant: 'outlined',
+    className: classes.inputControl2,
+  };
+}
 // insert new Customer
 async function callAPICustomers(data, CustomerId) {
   // console.log(CustomerId)
@@ -360,7 +484,7 @@ async function callAPICustomers(data, CustomerId) {
     let res;
     if (CustomerId) {
       // update
-      res = await axios.put(`${apiRoot}/users/${CustomerId}`, data);
+      res = await axios.put(`${apiRoot}/users/${CustomerId}/devices`, data);
     } else {
       // insert
       res = await axios.post(`${apiRoot}/users`, data);
@@ -370,7 +494,7 @@ async function callAPICustomers(data, CustomerId) {
       return false;
     }
     // success
-    // console.log(res.data)
+    console.log(res.data)
     return res.data;
   } catch (error) {
     const result = error.response;

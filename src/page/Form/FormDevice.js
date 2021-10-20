@@ -13,6 +13,9 @@ import {
   Typography,
   TextField,
   Button,
+  FormControl,
+  Select,
+  FormHelperText
 } from '@material-ui/core';
 
 // icons
@@ -31,22 +34,22 @@ export default function FormDevice() {
   let { device_id } = useParams();
   const [isNew, setNewDevice] = useState(true);
   const [deviceData, setDeviceData] = useState(''); // deviceTypeId, code, imei
-  // console.log(deviceData)
+  // console.log(device_id)
   // data form
-  const deviceTypeId = useFormInput(
+  const deviceTypeId = useFormSelect(
     !isNullOrUndefined(deviceData) && !isNullOrEmpty(deviceData)
-      ? deviceData.data.deviceTypeId : '',
+      ? deviceData.deviceTypeId : undefined,
       true
   );
   const code = useFormInput(
     !isNullOrUndefined(deviceData) && !isNullOrEmpty(deviceData)
-      ? deviceData.data.code : '',
+      ? deviceData.code : '',
       true
   );
   
   const imei = useFormInput(
     !isNullOrUndefined(deviceData) && !isNullOrEmpty(deviceData)
-      ? deviceData.data.imei : '',
+      ? deviceData.imei : '',
       true
   );
   // flag submit
@@ -60,11 +63,30 @@ export default function FormDevice() {
   const [isOpenQuestion, setOpenPopupQuestion] = useState(false);
   // is open popup question update
   const [isOpenQuestionUpdate, setOpenPopupQuestionUpdate] = useState(false);
+  // list  Device type
+  const [listDevicetype, setListDevicetype] = useState(null);
+  // check input
+  const [isValid, setInValid] = useState(false);
 
   useEffect(() => {
     // check isNew user
     !isNullOrUndefined(device_id) && setNewDevice(false);
 
+    // get data Device type
+    async function getDataDevicetype() {
+      try {
+        const res = await axios.get(`${apiRoot}/device-types`);
+        // error
+        if (res.status !== 200) {
+          return;
+        }
+        // success
+        // console.log(res.data.data.items);
+        setListDevicetype(res.data.data.items);
+      } catch (error) {
+        return;
+      }
+    }
     // get data DeviceType (nếu url có DeviceType id)
     async function getDataDevice(DeviceId) {
       // console.log(DeviceId)
@@ -76,8 +98,8 @@ export default function FormDevice() {
           return;
         }
         // success
-        const result = res.data;
-        // console.log(res.data.data)
+        const result = res.data.data;
+        // console.log(res)
         // console.log(result)
         setDeviceData(result);
       } catch (error) {
@@ -87,13 +109,27 @@ export default function FormDevice() {
     if (!isNullOrEmpty(device_id)) {
       getDataDevice(device_id);
     }
-
+    getDataDevicetype();
     getDataDevice();
   }, [device_id]);
 
+  // check validation
+  useEffect(() => {
+    // check validation input
+    function checkValid() {
+      if (!validation()) {
+        setInValid(false);
+        return;
+      }
+
+      setInValid(true);
+    }
+
+    checkValid();
+  });
   // save deviceType data
   const handleSave = async () => {
-    // if (!validation()) return;
+    if (!validation()) return;
 
     // show question mode update
     if (!isNew) {
@@ -134,7 +170,7 @@ export default function FormDevice() {
       isLoading: false,
       msg: 'Cập nhật đã hoàn tất.'
     });
-    // location.reload();
+    location.reload();
   };
 
   // handle add new device
@@ -177,7 +213,40 @@ export default function FormDevice() {
     // mode insert nên sau khi insert thành công show question redirect url update user or ridirect url list deviceType
     window.location.href = `${folderRoot}Thiet-Bi/update/${result.data.id}`;
   };
-
+  const handleChange = name => e => {
+    setDeviceData({
+      ...deviceData,
+      [name]: e.target.value
+    });
+  };
+  // rending option user status
+  const optionDeviceTypeId = []
+  !isNullOrEmpty(listDevicetype) &&
+  listDevicetype.map(e => {
+    optionDeviceTypeId.push (
+      <option value={e.id} key={e.id}>
+        {e.name}
+      </option>
+    );
+  });
+  // validation
+  const validation = () => {
+    if (isNew) {
+      if (
+        !isNullOrEmpty(deviceTypeId.value) &&
+        !isNullOrEmpty(code.value) &&
+        !isNullOrEmpty(imei.value)
+      )
+      return true;
+    } else {
+      if (
+        deviceData.code !== code.value ||
+        deviceData.imei !== imei.value
+      )
+      return true;
+    }
+  };
+  // console.log(deviceData.data)
   return (
     <div className={classes.root}>
       <div className={classes.headFormGroup}>
@@ -188,19 +257,41 @@ export default function FormDevice() {
       <div className={clsx(classes.formContent, classes.scrollPage)}>
         <div className={classes.formGroup}>
           <label>
-            Id loại thiết bị <em>（Bắt Buộc）</em>
+            Tên loại thiết bị <em>（*）</em>
           </label>
-          <TextField {...deviceTypeId} disabled={isNew ? false : true}/>
+          <div className={classes.rowInline}>
+            <FormControl
+              variant="outlined"
+              className={clsx(classes.formControlSelect, classes.dContents)}
+            >
+              <Select
+                native
+                style={{width: '100%'}}
+                onChange={handleChange('deviceTypeId')}
+                {...deviceTypeId}
+                disabled={isNew ? false : true}
+              >
+                <option aria-label="None" value="" />
+                {optionDeviceTypeId}
+              </Select>
+            </FormControl>
+          </div>
         </div>
+        {deviceTypeId.value === '' ? 
+          <FormHelperText className={classes.selectErro}>
+            Đây là một mục bắt buộc.
+          </FormHelperText>
+          : '' 
+        }
         <div className={classes.formGroup}>
           <label>
-            Code <em>（Bắt Buộc）</em>
+            Code <em>（*）</em>
           </label>
           <TextField {...code} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            Imei <em>（Bắt Buộc）</em>
+            Imei <em>（*）</em>
           </label>
           <TextField {...imei} />
         </div>
@@ -220,7 +311,7 @@ export default function FormDevice() {
               variant="contained"
               color="primary"
               onClick={handleSave}
-              // disabled={!isValid || statusSubmit.isLoading}
+              disabled={!isValid || statusSubmit.isLoading}
             >
               {isNew ? `Thêm mới` : `Chỉnh sửa`}
             </Button>
@@ -291,6 +382,33 @@ function useFormInput(initValue, isRequire) {
   };
 }
 
+function useFormSelect(initValue, isRequire) {
+  const classes = useStyles();
+  const [value, setValue] = useState(initValue);
+  const [isFirst, setIsFirst] = useState(true);
+  useEffect(() => {
+    if (!isNullOrEmpty(initValue)) {
+      setValue(initValue);
+    }
+  }, [initValue]);
+
+  function handleChange(e) {
+    setValue(e.target.value);
+
+    // check first time
+    if (isFirst) {
+      setIsFirst(!isFirst);
+    }
+  }
+  let error = isRequire && isNullOrEmpty(value) && !isFirst ? true : false;
+  return {
+    value: value,
+    error: error,
+    onChange: handleChange,
+    variant: 'outlined',
+    className: classes.inputControl2,
+  };
+}
 // insert new DeviceType
 async function callAPIDevice(data, DeviceId) {
   // console.log(DeviceId)

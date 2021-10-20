@@ -72,7 +72,7 @@ export default function Header(props) {
               component="div" 
               className={classes.textHeader}
             >
-              Vietmap Ecevn
+              Ecevn
             </Typography>
           </Toolbar>
         </div>

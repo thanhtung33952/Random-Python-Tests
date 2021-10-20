@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 // import Notification from 'components/Notification';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   DataGrid,
   GridOverlay,
@@ -45,6 +47,7 @@ export default function Device() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [deviceSelected, setDeviceSelected] = useState();
+  const [pageSize, setPageSize] = useState(20)
   // const [cookies] = useCookies(['AuthenticationWorkflow']);
   // const userInfo = cookies.AuthenticationWorkflow;
   // const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
@@ -74,6 +77,7 @@ export default function Device() {
     if (!result) return;
 
     // success
+    // console.log(result.items)
     setData(result.items);
     }
 
@@ -148,14 +152,14 @@ export default function Device() {
           className={clsx(classes.btnDelete, classes.mRight10)}
           href={`${folderRoot}Thiet-Bi/update/${params.row.id}`}
         >
-          Chỉnh sửa
+          <EditIcon />
         </Button>
         <Button
           variant="contained"
           className={classes.btnDelete}
           onClick={() => handleClickOpen(params.row)}
         >
-          Xóa
+          <DeleteIcon />
         </Button>
       </React.Fragment>
     )
@@ -167,7 +171,7 @@ export default function Device() {
     Devices.push (row = {
       id: row.id,
       stt: i + 1,
-      deviceTypeId: row.deviceTypeId,
+      deviceTypeId: row.deviceType.name,
       code: row.code,
       imei: row.imei
     })
@@ -184,7 +188,7 @@ export default function Device() {
     },
     {
       field: 'deviceTypeId',
-      headerName: 'Id loại thiết bị',
+      headerName: 'Tên loại thiết bị',
       // headerAlign: 'center',
       // align: 'center',
       width: 200,
@@ -211,9 +215,9 @@ export default function Device() {
     },
     {
       field: 'Hành động',
-      // headerAlign: 'center',
-      // align: 'center',
-      width: 200,
+      headerAlign: 'center',
+      align: 'center',
+      width: 120,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
@@ -283,7 +287,7 @@ export default function Device() {
           <Grid item xs={12} sm={12} md={12}>
             <div className={classes.contentForm}>
               <DataGrid
-                  pageSize={25}
+                  pageSize={pageSize}
                   pagination
                   rowHeight={36}
                   disableColumnMenu
@@ -293,6 +297,8 @@ export default function Device() {
                   // onRowSelected={handleSelectRow}
                   loading={isLoading}
                   hideFooterSelectedRowCount={true}
+                  rowsPerPageOptions = {[20]}
+                  onPageSizeChange={(params) => setPageSize(params.pageSize)}
                   components={{
                     LoadingOverlay: CustomLoadingOverlay,
                     NoRowsOverlay: CustomNoRowsOverlay,
@@ -319,9 +325,9 @@ export default function Device() {
 //  get Devices
 async function getDevices(data) {
   // console.log(data)
-  let url = `${apiRoot}/devices?limit=1000000000`;
+  let url = `${apiRoot}/devices?page=-1`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/devices?Search=${data.searchTerm}&limit=1000000000`;
+    url = `${apiRoot}/devices?Search=${data.searchTerm}&page=-1`;
   }
   try {
     const res = await axios.get( url );

@@ -20,6 +20,10 @@ const rowSubmit = {
     minHeight: 40,
     minWidth: 120,
     fontSize: '1rem',
+    backgroundColor: theme.palette.blue.main,
+    '&:hover': {
+      backgroundColor: theme.palette.blue.light,
+    },
   },
 };
 const btnCance = {

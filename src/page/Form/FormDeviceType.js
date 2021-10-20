@@ -32,16 +32,16 @@ export default function FormDeviceType() {
   let { deviceType_id } = useParams();
   const [isNew, setNewDeviceType] = useState(true);
   const [deviceTypeData, setDeviceTypeData] = useState(''); // name, description
-  // console.log(deviceTypeData.data)
+  // console.log(deviceTypeData.data.name)
   // data form
   const name = useFormInput(
     !isNullOrUndefined(deviceTypeData) && !isNullOrEmpty(deviceTypeData)
-      ? deviceTypeData.data.name : '',
+      ? deviceTypeData.name : '',
       true
   );
   const description = useFormInput(
     !isNullOrUndefined(deviceTypeData) && !isNullOrEmpty(deviceTypeData)
-      ? deviceTypeData.data.description : '',
+      ? deviceTypeData.description : '',
       true
   );
   // flag submit
@@ -51,6 +51,8 @@ export default function FormDeviceType() {
     isLoading2: false,
     msg: ''
   });
+  // check input
+  const [isValid, setInValid] = useState(false);
   // is open popup after save deviceType
   const [isOpenQuestion, setOpenPopupQuestion] = useState(false);
   // is open popup question update
@@ -71,7 +73,7 @@ export default function FormDeviceType() {
           return;
         }
         // success
-        const result = res.data;
+        const result = res.data.data;
         // console.log(res.data.data)
         // console.log(result)
         setDeviceTypeData(result);
@@ -86,9 +88,24 @@ export default function FormDeviceType() {
     getDataDeviceType();
   }, [deviceType_id]);
 
+  // console.log(deviceTypeData)
+  // check validation
+  useEffect(() => {
+    // check validation input
+    function checkValid() {
+      if (!validation()) {
+        setInValid(false);
+        return;
+      }
+
+      setInValid(true);
+    }
+
+    checkValid();
+  });
   // save deviceType data
   const handleSave = async () => {
-    // if (!validation()) return;
+    if (!validation()) return;
 
     // show question mode update
     if (!isNew) {
@@ -132,7 +149,7 @@ export default function FormDeviceType() {
       isLoading: false,
       msg: 'Cập nhật đã hoàn tất.'
     });
-    // location.reload();
+    location.reload();
   };
 
   // handle add new deviceType
@@ -171,7 +188,7 @@ export default function FormDeviceType() {
 
     // setDeviceTypeData({
     //   ...deviceTypeData,
-    //   id: result.data.id
+    //   id: result.id
     // });
     setStatusSubmit({
       ...statusSubmit,
@@ -187,22 +204,22 @@ export default function FormDeviceType() {
 // console.log(deviceTypeData)
 
   // validation
-//   const validation = () => {
-//     if (isNew) {
-//       if (
-//         !isNullOrEmpty(status.value) &&
-//         !isNullOrEmpty(departmentId.value) &&
-//       )
-//       return true;
-//     } else {
-//       if (
-//         (
-//         userData.userName !== name.value ||
-//         userData.status !== status.value ||
-//       )
-//       return true;
-//     }
-//   };
+  const validation = () => {
+    if (isNew) {
+      if (
+        !isNullOrEmpty(name.value) &&
+        !isNullOrEmpty(description.value)
+      )
+      return true;
+    } else {
+      if (
+        deviceTypeData.name !== name.value ||
+        deviceTypeData.description !== description.value
+      )
+      return true;
+    }
+  };
+  // console.log(deviceTypeData)
 
   return (
     <div className={classes.root}>
@@ -214,13 +231,13 @@ export default function FormDeviceType() {
       <div className={clsx(classes.formContent, classes.scrollPage)}>
         <div className={classes.formGroup}>
           <label>
-            Loại thiết bị <em>（Bắt Buộc）</em>
+            Loại thiết bị <em>（*）</em>
           </label>
           <TextField {...name} />
         </div>
         <div className={classes.formGroup}>
           <label>
-            Miêu tả <em>（Bắt Buộc）</em>
+            Mô tả <em>（*）</em>
           </label>
           <TextField {...description} />
         </div>
@@ -240,7 +257,7 @@ export default function FormDeviceType() {
               variant="contained"
               color="primary"
               onClick={handleSave}
-              // disabled={!isValid || statusSubmit.isLoading}
+              disabled={!isValid || statusSubmit.isLoading}
             >
               {isNew ? `Thêm mới` : `Chỉnh sửa`}
             </Button>

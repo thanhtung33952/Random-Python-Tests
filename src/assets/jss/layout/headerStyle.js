@@ -48,7 +48,7 @@ export default makeStyles((theme) => ({
   },
   account: {
     width: 'auto',
-    color: theme.palette.grey.dark,
+    color: theme.palette.white.main,
     cursor: 'pointer',
     paddingTop: 0,
     paddingBottom: 0,
@@ -76,6 +76,6 @@ export default makeStyles((theme) => ({
     },
   },
   textHeader: {
-    color: '#fff'
+    color: theme.palette.white.main
   }
 }));

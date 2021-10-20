@@ -14,7 +14,8 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 // import GroupAddIcon from '@mui/icons-material/GroupAdd';
-// import DeleteIcon from '@mui/icons-material/DeleteForever';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   DataGrid,
   GridOverlay,
@@ -45,6 +46,7 @@ export default function DeviceType() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [deviceTypeSelected, setDeviceTypeSelected] = useState();
+  const [pageSize, setPageSize] = useState(20)
   // const [cookies] = useCookies(['AuthenticationWorkflow']);
   // const userInfo = cookies.AuthenticationWorkflow;
   // let token = cookies.AuthenticationWorkflow.tokenAccess;
@@ -146,16 +148,14 @@ export default function DeviceType() {
           className={clsx(classes.btnDelete, classes.mRight10)}
           href={`${folderRoot}Loai-Thiet-Bi/update/${params.row.id}`}
         >
-          {/*<DeleteIcon />*/}
-          Chỉnh sửa
+          <EditIcon />
         </Button>
         <Button
           variant="contained"
           className={classes.btnDelete}
           onClick={() => handleClickOpen(params.row)}
         >
-          {/*<DeleteIcon />*/}
-          Xóa
+          <DeleteIcon />
         </Button>
       </React.Fragment>
     )
@@ -193,7 +193,7 @@ export default function DeviceType() {
     },
     {
       field: 'description',
-      headerName: 'Miêu tả',
+      headerName: 'Mô tả',
       // headerAlign: 'center',
       // align: 'center',
       flex: 1,
@@ -202,9 +202,9 @@ export default function DeviceType() {
     },
     {
       field: 'Hành động',
-      // headerAlign: 'center',
-      // align: 'center',
-      width: 180,
+      headerAlign: 'center',
+      align: 'center',
+      width: 120,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
@@ -253,7 +253,6 @@ export default function DeviceType() {
       </div>
     );
   };
-
   return (
     <div className={classes.root}>
       <div className={classes.rowTitle}>
@@ -277,22 +276,26 @@ export default function DeviceType() {
           <Grid item xs={12} sm={12} md={12}>
             <div className={classes.contentForm}>
               <DataGrid
-                  pageSize={25}
-                  pagination
-                  rowHeight={36}
-                  disableColumnMenu
-                  className={classes.container}
-                  columns={columns}
-                  rows={DeviceTypes}
-                  // onRowSelected={handleSelectRow}
-                  loading={isLoading}
-                  hideFooterSelectedRowCount={true}
-                  components={{
-                    LoadingOverlay: CustomLoadingOverlay,
-                    NoRowsOverlay: CustomNoRowsOverlay,
-                    Toolbar: CustomToolbar,
-                  }}
-                  // onEditCellChange= {deteleUser}
+                // pageSize={25}
+                pageSize={pageSize}
+                pagination
+                rowHeight={36}
+                disableColumnMenu
+                className={classes.container}
+                columns={columns}
+                rows={DeviceTypes}
+                // onRowSelected={handleSelectRow}
+                loading={isLoading}
+                hideFooterSelectedRowCount={true}
+                rowsPerPageOptions = {[20]}
+                onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                // rowsPerPage={[25, 50, 150]}
+                components={{
+                  LoadingOverlay: CustomLoadingOverlay,
+                  NoRowsOverlay: CustomNoRowsOverlay,
+                  Toolbar: CustomToolbar,
+                }}
+                // onEditCellChange= {deteleUser}
               />
               {/* popup action after call api delete */}
               <PopupQuestion
@@ -313,9 +316,9 @@ export default function DeviceType() {
 //  get DeviceTypes
 async function getDeviceTypes(data) {
   // console.log(data)
-  let url = `${apiRoot}/device-types?limit=1000000000`;
+  let url = `${apiRoot}/device-types?page=-1`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/device-types?Search=${data.searchTerm}&limit=1000000000`;
+    url = `${apiRoot}/device-types?Search=${data.searchTerm}&page=-1`;
   }
   try {
     const res = await axios.get( url );

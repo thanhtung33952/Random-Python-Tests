@@ -12,7 +12,8 @@ import Button from '@material-ui/core/Button';
 // import Snackbar from '@material-ui/core/Snackbar';
 // import Notification from 'components/Notification';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// import DeleteIcon from '@mui/icons-material/DeleteForever';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import {
   DataGrid,
@@ -47,6 +48,7 @@ export default function Customer() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [customSelected, setCustomSelected] = useState();
+  const [pageSize, setPageSize] = useState(20)
   // const [cookies] = useCookies(['AuthenticationWorkflow']);
   // const userInfo = cookies.AuthenticationWorkflow;
   // const [flagApi, setFlagApi] = useState({openMsg: false, msg: '', loading: false, status: 0});
@@ -59,26 +61,26 @@ export default function Customer() {
     msg: ''
   });
   useEffect(() => {
+    async function getData() {
+    // if (isNullOrUndefined(token)) return;
+    // show loading
+    setisLoading(true);
 
-      async function getData() {
-      // if (isNullOrUndefined(token)) return;
-      // show loading
-      setisLoading(true);
+    // call api get data
+    const result = await getCustomers();
 
-      // call api get data
-      const result = await getCustomers();
+    // hide loading
+    setisLoading(false);
 
-      // hide loading
-      setisLoading(false);
+    // faild
+    if (!result) return;
 
-      // faild
-      if (!result) return;
+    // success
+    // console.log(result.items)
+    setData(result.items);
+    }
 
-      // success
-      setData(result.items);
-      }
-
-      getData();
+    getData();
   }, []);
 
   // delete Custom
@@ -149,14 +151,14 @@ export default function Customer() {
           className={clsx(classes.btnDelete, classes.mRight10)}
           href={`${folderRoot}Khach-hang/update/${params.row.id}`}
         >
-          Chỉnh sửa
+          <EditIcon />
         </Button>
         <Button
           variant="contained"
           className={classes.btnDelete}
           onClick={() => handleClickOpen(params.row)}
         >
-          Xóa
+          <DeleteIcon />
         </Button>
       </React.Fragment>
     )
@@ -169,8 +171,8 @@ export default function Customer() {
     customer.push (row = {
       id: row.id,
       stt: i + 1,
-      deviceId: row.deviceId,
-      name: row.firstName + row.lastName,
+      deviceId: row.device.imei,
+      name: row.firstName + " " + row.lastName,
       address: row.address,
       phone: row.phone,
       email: row.email,
@@ -189,7 +191,7 @@ export default function Customer() {
     },
     {
       field: 'deviceId',
-      headerName: 'Id thiết bị',
+      headerName: 'Tên thiết bị',
       // headerAlign: 'center',
       // align: 'center',
       width: 150,
@@ -231,18 +233,18 @@ export default function Customer() {
     },
     {
       field: 'description',
-      headerName: 'Miêu tả',
+      headerName: 'Mô tả',
       // headerAlign: 'center',
       // align: 'center',
       width: 150,
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'Xóa', 
-      headerName: 'Xóa',
-      // headerAlign: 'center',
-      // align: 'center',
-      width: 200,
+      field: 'Hành động', 
+      // headerName: 'Hành động',
+      headerAlign: 'center',
+      align: 'center',
+      width: 120,
       renderCell: renderChangleButton,
       headerClassName: 'super-app-theme--header',
       sortable: false,
@@ -326,7 +328,7 @@ export default function Customer() {
           <Grid item xs={12} sm={12} md={12}>
             <div className={classes.contentForm}>
               <DataGrid
-                  pageSize={25}
+                  pageSize= {pageSize}
                   pagination
                   rowHeight={36}
                   disableColumnMenu
@@ -334,7 +336,10 @@ export default function Customer() {
                   columns={columns}
                   rows={customer}
                   loading={isLoading}
-                  // hideFooterSelectedRowCount={true}
+                  hideFooterSelectedRowCount={true}
+                  // hideFooterPagination={true}
+                  rowsPerPageOptions = {[20]}
+                  onPageSizeChange={(params) => setPageSize(params.pageSize)}
                   components={{
                     LoadingOverlay: CustomLoadingOverlay,
                     NoRowsOverlay: CustomNoRowsOverlay,
@@ -362,9 +367,9 @@ export default function Customer() {
 //  get Devices
 async function getCustomers(data) {
   // console.log(data)
-  let url = `${apiRoot}/users?limit=1000000000`;
+  let url = `${apiRoot}/users?page=-1`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/users?Search=${data.searchTerm}&limit=1000000000`;
+    url = `${apiRoot}/users?Search=${data.searchTerm}&page=-1`;
   }
   try {
     const res = await axios.get( url );
