@@ -14,12 +14,12 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
 import {
   DataGrid,
   GridOverlay,
   GridToolbarExport,
-  GridToolbarContainer
+  GridToolbarContainer,
+  GridToolbarColumnsButton
 } from '@material-ui/data-grid';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 // import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -199,10 +199,10 @@ export default function Customer() {
     },
     {
       field: 'name',
-      headerName: 'name',
+      headerName: 'Tên khách hàng',
       // headerAlign: 'center',
       // align: 'center',
-      width: 150,
+      width: 200,
       // renderCell: renderClassification,
       headerClassName: 'super-app-theme--header',
     },
@@ -279,49 +279,43 @@ export default function Customer() {
   //     setFlagApi({ ...flagApi, openMsg: false, msg: '' });
   // };
   // console.log(customer.length)
+  
   const CustomToolbar = () => {
     return (
-      <div>
-        <div className={classes.formGroup}>
-          <div className={classes.search}>
-            <SearchInput
-              autoFocus
-              placeholder="Tìm trên danh sách khách hàng"
-              onSubmit={handleSearchCustom}
-              onChange={handleChangeField('search')}
-            />
-          </div>
-          <GridToolbarContainer>
-            <GridToolbarExport style={{marginTop: 20}} csvOptions={{
-              utf8WithBom: true,
-            }}/>
-          </GridToolbarContainer>
-        </div>
-        <Divider
-          // style={{margin: '0 -15px'}}
-        />
-      </div>
+      <GridToolbarContainer className={classes.justEnd}>
+        <GridToolbarColumnsButton className={classes.marTop20}/>
+        <GridToolbarExport className={classes.marTop20} csvOptions={{
+          utf8WithBom: true,
+        }}/>
+      </GridToolbarContainer>
     );
   };
   return (
     <div className={classes.root}>
-      <div className={classes.rowTitle}>
-        <Typography className={classes.titleTool}>
-          Danh sách khách hàng ({customer.length})
-        </Typography>
-        <div className={classes.rowButtonAdd}>
-          <Button
-            variant="contained"
-            className={classes.btnAdd}
-            href={`${folderRoot}Khach-Hang/addnew`}
-            // href={`${folderRoot}admin/request`}
-            // onClick={() => handleClickOpenSample()}
-            // target="_blank"
-          >
-            tạo khách hàng
-            <PersonAddIcon className={classes.btnIcon}/>
-          </Button>
-        </div>
+      <Typography className={classes.titleTool}>
+        Danh sách khách hàng ({customer.length})
+      </Typography>
+      <div className={classes.rowButtonAdd}>
+        <Button
+          variant="contained"
+          className={classes.btnAdd}
+          href={`${folderRoot}Khach-Hang/addnew`}
+          // href={`${folderRoot}admin/request`}
+          // onClick={() => handleClickOpenSample()}
+          // target="_blank"
+        >
+          tạo khách hàng
+          <PersonAddIcon className={classes.btnIcon}/>
+        </Button>
+      </div>
+      <div className={classes.search}>
+        <SearchInput
+          autoFocus
+          placeholder="Tìm trên danh sách khách hàng"
+          styleSearch="enter"
+          onSubmit={handleSearchCustom}
+          onChange={handleChangeField('search')}
+        />
       </div>
       <Wrapper>
         <Grid container spacing={1}>
@@ -369,7 +363,7 @@ async function getCustomers(data) {
   // console.log(data)
   let url = `${apiRoot}/users?page=-1`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/users?Search=${data.searchTerm}&page=-1`;
+    url = `${apiRoot}/users?Search=${data.searchTerm}`;
   }
   try {
     const res = await axios.get( url );

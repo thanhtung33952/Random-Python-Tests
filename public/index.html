@@ -31,6 +31,18 @@
       body {
         font-family: 'M PLUS 1p', sans-serif;
       }
+      .MuiButton-textPrimary {
+        color: #5bad84;
+      }
+      .MuiSwitch-colorPrimary.Mui-checked {
+        color: #5bad84;
+      }
+      .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+        background-color: #5bad84;
+      }
+      .MuiDataGridColumnsPanel-container {
+        max-height: calc(100vh - 500px);
+      }
       .react-preloader-wrapper {
         position: fixed;
         top: 0;
@@ -70,7 +82,6 @@
         animation-delay: -0.8s;
         -webkit-animation-delay: -0.8s;
       }
-
       @keyframes preloader {
         0% {
           transform: scale(0, 0);

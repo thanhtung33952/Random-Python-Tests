@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import App from './App';
 import Dashboard from './layout/Dashboard';
+import Signin from './page/Authentication/Signin';
 import theme from './theme';
 
 ReactDOM.render(
@@ -12,6 +13,7 @@ ReactDOM.render(
     <ThemeProvider theme={theme}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
+          <Route exact path="/signin" component={Signin} />
           <Route path="/" component={Dashboard} />
         </Switch>
       </BrowserRouter>

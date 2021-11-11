@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import routes from '../routes';
+import { Redirect, Switch } from 'react-router-dom';
 import { Header, Sidebar, Workspace } from '../layout';
-import PrivateRoute from '../component/PrivateRoute/PrivateRoute';
+import { useCookies } from 'react-cookie';
 
+import { folderRoot } from '../constant/index';
+import { isNullOrUndefined } from '../utils/helpers';
 // jss
 import useStyles from '../assets/jss/layout/dashboardStyle';
+// component
+import PublicRoute from '../component/PublicRoute/PublicRoute';
+// import PrivateRoute from '../component/PrivateRoute/PrivateRoute';
 
 function Dashboard() {
   const classes = useStyles();
   const [opened, setOpened] = useState(true);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [cookies] = useCookies(['AuthenticationEcevn']);
+  const userInfo = cookies.AuthenticationEcevn;
+  // console.log(userInfo)
 
   const resizeDispatch = () => {
     if (typeof Event === 'function') {
@@ -51,12 +60,21 @@ function Dashboard() {
     isFullscreen ? document.cancelFullScreen() : element.requestFullScreen();
   };
 
+  // logout
+  const handleLogout = () => {
+    // removeCookie('AuthenticationEcevn');
+    document.cookie =
+      'AuthenticationEcevn=; path=/; expires=' + new Date(0).toUTCString();
+    window.location.href = `${folderRoot}signin`;
+  };
   return (
     <div>
       <Header
         toggleDrawer={handleDrawerToggle}
         toogleNotifications={handleNotificationToggle}
         toggleFullscreen={handleFullscreenToggle}
+        userInfo={userInfo}
+        logout={handleLogout}
       />
       <div className={classes.panel}>
         <Sidebar
@@ -65,7 +83,13 @@ function Dashboard() {
           toggleDrawer={handleDrawerToggle}
         />
         <Workspace opened={opened}>
-          <PrivateRoute routes={routes} />
+          {isNullOrUndefined(userInfo) || userInfo === 'undefined' ? (
+            <Switch>
+              <Redirect push to="/signin" />
+            </Switch>
+          ) : (
+            <PublicRoute userInfo={userInfo} routes={routes} />
+          )}
         </Workspace>
       </div>
     </div>

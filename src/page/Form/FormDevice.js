@@ -251,7 +251,7 @@ export default function FormDevice() {
     <div className={classes.root}>
       <div className={classes.headFormGroup}>
         <Typography className={classes.titleForm}>
-          {isNew ? `Thêm thiết bị mới` : `Chỉnh sửa thông tin thiết bị`}
+          {isNew ? `Thêm thiết bị mới` : `Chỉnh sửa thông tin ${deviceData.imei}`}
         </Typography>
       </div>
       <div className={clsx(classes.formContent, classes.scrollPage)}>

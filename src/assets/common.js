@@ -9,7 +9,7 @@ const warningColor = yellow.default[500];
 // Spacing
 const drawerWidth = 240;
 const notificationCenterWidth = 300;
-const MobileBreakpoint = 960;
+const MobileBreakpoint = 600;
 
 // style row and button action form
 const rowSubmit = {

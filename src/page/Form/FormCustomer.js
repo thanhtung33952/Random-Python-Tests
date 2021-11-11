@@ -124,7 +124,7 @@ export default function FormCustomer() {
         // success
         const result = res.data.data;
         // console.log(res.data.data)
-        console.log(result)
+        // console.log(result)
         setCustomersData(result);
       } catch (error) {
         return;
@@ -291,7 +291,7 @@ export default function FormCustomer() {
     <div className={classes.root}>
       <div className={classes.headFormGroup}>
         <Typography className={classes.titleForm}>
-          {isNew ? `Thêm khach hàng mới` : `Chỉnh sửa thông tin khách hàng`}
+          {isNew ? `Thêm khach hàng mới` : `Chỉnh sửa thông tin ${customersData.firstName} ${customersData.lastName}`}
         </Typography>
       </div>
       <div className={clsx(classes.formContent, classes.scrollPage)}>

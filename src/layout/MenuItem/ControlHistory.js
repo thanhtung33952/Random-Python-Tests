@@ -20,8 +20,7 @@ import {
   DataGrid,
   GridOverlay,
   GridToolbarExport,
-  GridToolbarContainer,
-  GridToolbarColumnsButton
+  GridToolbarContainer
 } from '@material-ui/data-grid';
 
 // constant
@@ -41,12 +40,12 @@ import SearchInput from '../../component/SearchForm/SearchInput';
 // jss
 import useStyles from '../../assets/jss/layout/MenuItemStyle';
 
-export default function DeviceType() {
+export default function ControlHistory() {
   const classes = useStyles();
   const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [deviceTypeSelected, setDeviceTypeSelected] = useState();
+  const [controlHistorySelected, setControlHistorySelected] = useState();
   const [pageSize, setPageSize] = useState(20)
   // const [cookies] = useCookies(['AuthenticationWorkflow']);
   // const userInfo = cookies.AuthenticationWorkflow;
@@ -66,7 +65,7 @@ export default function DeviceType() {
     setisLoading(true);
 
     // call api get data
-    const result = await getDeviceTypes();
+    const result = await getControlHistorys();
 
     // hide loading
     setisLoading(false);
@@ -82,12 +81,12 @@ export default function DeviceType() {
   }, []);
 
   // delete Device type
-  const deteleDeviceType = async () => {
+  const deteleControlHistory = async () => {
     setStatusSubmit({ ...statusSubmit, isLoading: true });
-    if (isNullOrUndefined(deviceTypeSelected)) return;
-    // console.log(deviceTypeSelected);
+    if (isNullOrUndefined(controlHistorySelected)) return;
+    // console.log(controlHistorySelected);
     // call api delete
-    const result = await callAPIDeleteDeviceTypes(deviceTypeSelected.id);
+    const result = await callAPIDeleteControlHistorys(controlHistorySelected.id);
     // Failed
     if (!result) {
       setStatusSubmit({ ...statusSubmit, status: -1, isLoading: false });
@@ -98,7 +97,7 @@ export default function DeviceType() {
     // success
     setStatusSubmit({ ...statusSubmit, status: 1, isLoading: false });
     let newArr = [...data]; // copying the old data array
-    let index = newArr.findIndex(x => x.id === deviceTypeSelected.id);
+    let index = newArr.findIndex(x => x.id === controlHistorySelected.id);
     if (index !== -1) {
       newArr.splice(index, 1);
       setData(newArr);
@@ -106,10 +105,11 @@ export default function DeviceType() {
     }
   };
 
-  // on submit search DeviceType by key
-  const handleSearchDeviceType = async (formValue, callback) => {
+  // on submit search ControlHistory by key
+  const handleSearchControlHistory = async (formValue, callback) => {
     // call api search user
-    const result = await getDeviceTypes(formValue);
+    const result = await getControlHistorys(formValue);
+    console.log(result)
     if (!result) {
       callback();
       return;
@@ -118,16 +118,16 @@ export default function DeviceType() {
     setData(result.items);
   };
   // open popup
-  const handleClickOpen = deviceType => {
-    setDeviceTypeSelected(deviceType);
-    // console.log(deviceType);
+  const handleClickOpen = controlHistory => {
+    setControlHistorySelected(controlHistory);
+    // console.log(controlHistory);
     setOpen(true);
   };
   const handleAfterDelete = flag => {
     setOpen(false);
     // flag: yes||no
     if (flag === 'yes') {
-      deteleDeviceType();
+      deteleControlHistory();
     }
   };
   // Close popup
@@ -160,11 +160,11 @@ export default function DeviceType() {
     )
   }
 
-  // render DeviceTypes
-  const DeviceTypes = [];
+  // render controlHistorys
+  const ControlHistorys = [];
   data.length > 0 &&
   data.map((row, i) => (
-    DeviceTypes.push (row = {
+    ControlHistorys.push (row = {
       id: row.id,
       stt: i + 1,
       name: row.name,
@@ -234,38 +234,41 @@ export default function DeviceType() {
   // Tool bar
   const CustomToolbar = () => {
     return (
-      <GridToolbarContainer className={classes.justEnd}>
-        <GridToolbarColumnsButton className={classes.marTop20} />
-        <GridToolbarExport className={classes.marTop20} csvOptions={{
-          utf8WithBom: true,
-        }}/>
-      </GridToolbarContainer>
+      <div className={classes.formGroup}>
+        <div className={classes.search}>
+          <SearchInput
+            autoFocus={true}
+            placeholder="Tìm trên danh sách loại thiết bị"
+            styleSearch="enter"
+            onSubmit={handleSearchControlHistory}
+            onChange={handleChangeField('search')}
+          />
+        </div>
+        <GridToolbarContainer>
+          <GridToolbarExport style={{marginTop: 20}} csvOptions={{
+            utf8WithBom: true,
+          }}/>
+        </GridToolbarContainer>
+      </div>
     );
   };
   return (
     <div className={classes.root}>
-      <Typography className={classes.titleTool}>
-        Danh sách loại thiết bị ({DeviceTypes.length})
-      </Typography>
-      <div className={classes.rowButtonAdd}>
-        <Button
-          variant="contained"
-          className={classes.btnAdd}
-          href={`${folderRoot}Loai-Thiet-Bi/addnew`}
-          // target="_blank"
-        >
-          tạo loại thiết bị
-          <PersonAddIcon className={classes.btnIcon}/>
-        </Button>
-      </div>
-      <div className={classes.search}>
-        <SearchInput
-          autoFocus
-          styleSearch="enter"
-          placeholder="Tìm trên danh sách loại thiết bị"
-          onSubmit={handleSearchDeviceType}
-          onChange={handleChangeField('search')}
-        />
+      <div className={classes.rowTitle}>
+        <Typography className={classes.titleTool}>
+          Danh sách loại thiết bị ({ControlHistorys.length})
+        </Typography>
+        <div className={classes.rowButtonAdd}>
+          <Button
+            variant="contained"
+            className={classes.btnAdd}
+            href={`${folderRoot}Loai-Thiet-Bi/addnew`}
+            // target="_blank"
+          >
+            tạo loại thiết bị
+            <PersonAddIcon className={classes.btnIcon}/>
+          </Button>
+        </div>
       </div>
       <Wrapper>
         <Grid container spacing={1}>
@@ -278,7 +281,7 @@ export default function DeviceType() {
                 disableColumnMenu
                 className={classes.container}
                 columns={columns}
-                rows={DeviceTypes}
+                rows={ControlHistorys}
                 // onRowSelected={handleSelectRow}
                 loading={isLoading}
                 // hideFooterSelectedRowCount={true}  
@@ -307,12 +310,12 @@ export default function DeviceType() {
     </div>
   );
 }
-//  get DeviceTypes
-async function getDeviceTypes(data) {
+//  get ControlHistorys
+async function getControlHistorys(data) {
   // console.log(data)
   let url = `${apiRoot}/device-types?page=-1`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/device-types?Search=${data.searchTerm}`;
+    url = `${apiRoot}/device-types?Search=${data.searchTerm}&page=-1`;
   }
   try {
     const res = await axios.get( url );
@@ -328,8 +331,8 @@ async function getDeviceTypes(data) {
   }
 }
 
-//  call API Delete DeviceTypes
-async function callAPIDeleteDeviceTypes(id, data) {
+//  call API Delete ControlHistorys
+async function callAPIDeleteControlHistorys(id, data) {
   if (isNullOrEmpty(id)) return;
   try {
     const res = await axios.delete(`${apiRoot}/device-types/${id}`, data);

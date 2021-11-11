@@ -21,7 +21,7 @@ import AccountDown from '@mui/icons-material/KeyboardArrowDown';
 
 // jss
 import useStyles from '../../assets/jss/layout/headerStyle';
-// import { isNullOrUndefined } from '../../utils/helpers';
+import { isNullOrUndefined } from '../../utils/helpers';
 
 // helpers
 // component custommer
@@ -30,14 +30,14 @@ import useStyles from '../../assets/jss/layout/headerStyle';
 export default function Header(props) {
   const {
     // userInfo, logo, logoAltText, 
+    userInfo,
     toggleDrawer,
     logout
   } = props;
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [ anchorEl, setAnchorEl] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const handleSettingdToggle = event => setAnchorEl(event.currentTarget);
-
   const handleCloseMenu = () => setAnchorEl(null);
 
   const handleSearchExpandToggle = () => setSearchExpanded(!searchExpanded);
@@ -91,11 +91,10 @@ export default function Header(props) {
           <Hidden mdDown>
             <ListItemText
               primary={
-                // !isNullOrUndefined(userInfo) &&
-                // !isNullOrUndefined(userInfo.email)
-                //   ? userInfo.email
-                //   : ''
-                '01900633442'
+                !isNullOrUndefined(userInfo) &&
+                !isNullOrUndefined(userInfo.email)
+                  ? userInfo.email
+                  : ''
               }
             />
             <AccountDown />

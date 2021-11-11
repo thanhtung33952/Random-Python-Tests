@@ -46,7 +46,7 @@ export default makeStyles((theme) => ({
     '& .MuiDataGrid-toolbarContainer': {
       '& .MuiButton-textPrimary': {
         color: theme.palette.green.light
-      }
+      },
     },
 		'& .super-app-theme--cell': {
 			fontWeight: '600',
@@ -70,16 +70,18 @@ export default makeStyles((theme) => ({
 	},
   container: {
     padding: '0 28px',
-    height: 'calc(100vh - 132px)',
+    height: 'calc(100vh - 230px)',
     boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px',
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100vh - 260px)',
+    },
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100vh - 230px)',
+    },
   },
-	rowTitle: {
-		display: 'flex',
-		justifyContent: 'space-between'
-	},
   titleTool: {
     fontWeight: 400,
-    margin: '10px 0 0 40px',
+    margin: '10px 40px 0 40px',
     fontSize: 24,
   },
 	rowButtonAdd: {
@@ -121,17 +123,16 @@ export default makeStyles((theme) => ({
     // },
   },
   search: {
-    // border: '1px solid gray',
-    flex: 1,
+    border: '1px solid gray',
     position: 'relative',
     borderRadius: 10,
-    backgroundColor: alpha (theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: alpha (theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: 40,
-    marginLeft: 0,
-    marginTop: 20,
+    marginLeft: 40,
+    marginTop: 60,
   },
   btnDelete: {
     height: 30,
@@ -164,5 +165,89 @@ export default makeStyles((theme) => ({
   },
   msgError: {
 	color: theme.palette.redColor.main
-  }
+  },
+  gridContainer: {
+    boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px',
+    borderRadius: 4,
+    marginTop: 10
+  },
+  heightDashboard: {
+    height: 'calc(100vh - 260px)',
+    margin: 10,
+  },
+  heightDashboard2: {
+    height: 'calc(100vh - 290px)',
+  },
+  breakpoint: {
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100vh - 560px)',
+    },
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100vh - 260px)',
+    },
+  },
+  breakpoint2: {
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100vh - 320px)',
+    },
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100vh - 290px)',
+    },
+  },
+  containerDas: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  // marRight20: {
+  //   marginRight: 20
+  // },
+  borderBot: {
+    borderBottom: '1px solid grey',
+    marginBottom: 0,
+    justifyContent: 'space-between'
+  },
+  Offline: {
+    background: 'rgb(255, 85, 0)',
+    padding: '1px 8px',
+    color: '#fff',
+    marginRight: 10,
+    borderRadius: 4
+  },
+  btnDetails: {
+    textTransform: 'none',
+    color: theme.palette.blue.main,
+    padding: 0,
+    '&:hover': {
+      background: 'none'
+    }
+  },
+  spanDevice: {
+    margin: '15px 0', 
+    fontSize: '1.1rem',
+    fontƯeight: '600'
+  },
+  deviceCodeForm: {
+    // paddingTop: '0px !important',
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 20,
+    // justifyContent: 'center',
+    marginLeft: 30,
+    flexWrap: 'wrap',
+    '& .MuiTabPanel': {
+      padidng: '0px !important'
+    }
+  },
+  marTop0: {
+    marginTop: 0,
+    marginLeft: 20,
+    flex: 1
+  },
+  marTop20: {
+    marginTop: 20,
+  },
+  justEnd: {
+    // justifyContent: 'flex-end',
+  },
 }));

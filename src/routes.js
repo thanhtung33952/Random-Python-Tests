@@ -5,6 +5,8 @@ import { lazy } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 // pages
 const HomePage = lazy(() => import('./layout/MenuItem/Home'));
 const Customers = lazy(() => import('./layout/MenuItem/Customer'));
@@ -13,6 +15,9 @@ const Device = lazy(() => import('./layout/MenuItem/Device'));
 const FormDevice = lazy(() => import('./page/Form/FormDevice'));
 const DeviceType = lazy(() => import('./layout/MenuItem/DeviceType'));
 const FormDeviceType = lazy(() => import('./page/Form/FormDeviceType'));
+const Signin = lazy(() => import('./page/Authentication/Signin'));
+const Dashboard = lazy(() => import('./layout/MenuItem/Dashboard'));
+const ControlHistory = lazy(() => import('./layout/MenuItem/ControlHistory'));
 
 // const FlightTickets = lazy(() => import('./layout/MenuItem/FlightTickets'));
 // const Eating = lazy(() => import('./layout/MenuItem/Eating'));
@@ -34,27 +39,10 @@ var indexRoutes = [
     type: 'hide',
   },
   {
-    path: '/Khach-Hang',
-    name: 'Khách Hàng',
-    component: Customers,
-    type: 'submenu',
-    icon: <PersonIcon/>
-    // protected: true
-  },
-  {
-    path: `/Khach-Hang/addnew`,
-    name: 'Addnew Customer',
-    component: FormCustomer,
-    type: 'hide',
-    // protected: true
-  },
-  {
-    path: `/Khach-Hang/update/:customer_id`,
-    name: 'Update Customer.',
-    component: FormCustomer,
-    // protected: true,
-    type: 'hide',
-    // permistion: 1
+    path: '/dashboard',
+    name: 'Bảng điều khiển',
+    component: Dashboard,
+    icon: <DashboardIcon/>
   },
   {
     path: '/Thiet-Bi',
@@ -98,6 +86,64 @@ var indexRoutes = [
     component: FormDeviceType,
     type: 'hide',
   },
+  {
+    path: '/control-history',
+    name: 'Lịch sử điều khiển',
+    component: ControlHistory,
+    icon: <HourglassEmptyIcon/>,
+    // protected: true
+    type: 'hide',
+  },
+  {
+    path: '/Khach-Hang',
+    name: 'Khách Hàng',
+    component: Customers,
+    icon: <PersonIcon/>
+    // protected: true
+  },
+  {
+    path: `/Khach-Hang/addnew`,
+    name: 'Addnew Customer',
+    component: FormCustomer,
+    type: 'hide',
+    // protected: true
+  },
+  {
+    path: `/Khach-Hang/update/:customer_id`,
+    name: 'Update Customer.',
+    component: FormCustomer,
+    // protected: true,
+    type: 'hide',
+    // permistion: 1
+  },
+  // end
+  {
+    path: '/authentication',
+    name: 'authentication',
+    type: 'hide',
+    children: [
+      {
+        path: '/signin',
+        name: 'Signin',
+        component: Signin
+      },
+      // {
+      //   path: '/signup',
+      //   name: 'Signup',
+      //   component: Signup
+      // },
+      // {
+      //   path: '/forgot',
+      //   name: 'Forgot',
+      //   component: PasswordReset
+      // },
+      // {
+      //   path: '/change-password',
+      //   name: 'change-password',
+      //   component: ChangePassword
+      // }
+    ]
+  }
 ];
 
 export default indexRoutes;

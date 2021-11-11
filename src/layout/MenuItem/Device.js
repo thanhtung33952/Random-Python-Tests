@@ -20,7 +20,8 @@ import {
   DataGrid,
   GridOverlay,
   GridToolbarExport,
-  GridToolbarContainer
+  GridToolbarContainer,
+  GridToolbarColumnsButton
 } from '@material-ui/data-grid';
 
 // constant
@@ -246,41 +247,40 @@ export default function Device() {
     );
   };
 
+  // Tool bar
   const CustomToolbar = () => {
     return (
-      <div className={classes.formGroup}>
-        <div className={classes.search}>
-          <SearchInput
-            autoFocus
-            placeholder="Tìm trên danh sách thiết bị"
-            onSubmit={handleSearchDevice}
-            onChange={handleChangeField('search')}
-          />
-        </div>
-        <GridToolbarContainer>
-          <GridToolbarExport style={{marginTop: 20}} csvOptions={{
-            utf8WithBom: true,
-          }}/>
-        </GridToolbarContainer>
-      </div>
+      <GridToolbarContainer className={classes.justEnd}>
+        <GridToolbarColumnsButton className={classes.marTop20} />
+        <GridToolbarExport className={classes.marTop20} csvOptions={{
+          utf8WithBom: true,
+        }}/>
+      </GridToolbarContainer>
     );
   };
   return (
     <div className={classes.root}>
-      <div className={classes.rowTitle}>
-        <Typography className={classes.titleTool}>
-          Danh sách thiết bị ({Devices.length})
-        </Typography>
-        <div className={classes.rowButtonAdd}>
-          <Button
-            variant="contained"
-            className={classes.btnAdd}
-            href={`${folderRoot}Thiet-Bi/addnew`}
-          >
-            tạo thiết bị
-            <PersonAddIcon className={classes.btnIcon}/>
-          </Button>
-        </div>
+      <Typography className={classes.titleTool}>
+        Danh sách thiết bị ({Devices.length})
+      </Typography>
+      <div className={classes.rowButtonAdd}>
+        <Button
+          variant="contained"
+          className={classes.btnAdd}
+          href={`${folderRoot}Thiet-Bi/addnew`}
+        >
+          tạo thiết bị
+          <PersonAddIcon className={classes.btnIcon}/>
+        </Button>
+      </div>
+      <div className={classes.search}>
+        <SearchInput
+          autoFocus
+          styleSearch="enter"
+          placeholder="Tìm trên danh sách thiết bị"
+          onSubmit={handleSearchDevice}
+          onChange={handleChangeField('search')}
+        />
       </div>
       <Wrapper>
         <Grid container spacing={1}>
@@ -327,7 +327,7 @@ async function getDevices(data) {
   // console.log(data)
   let url = `${apiRoot}/devices?page=-1`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/devices?Search=${data.searchTerm}&page=-1`;
+    url = `${apiRoot}/devices?Search=${data.searchTerm}`;
   }
   try {
     const res = await axios.get( url );
