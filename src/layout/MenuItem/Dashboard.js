@@ -3,8 +3,10 @@ import axios from 'axios';
 // import * as moment from 'moment';
 // import { Link } from "react-router-dom";
 import clsx from 'clsx';
-// import { useCookies } from 'react-cookie';
-
+// import { useCookies } from 'react-cookie';ss
+import { database } from '../../component/filebase/config';
+import { getDatabase, ref, onValue, update } from "firebase/database";
+// import { collection, getDocs } from "firebase/firestore";
 //component material
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +16,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // import DeleteIcon from '@mui/icons-material/DeleteForever';
 // import EditIcon from '@mui/icons-material/Edit';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import Box from '@mui/material/Box';
@@ -30,7 +31,8 @@ import {
 } from '@material-ui/data-grid';
 
 // constant
-import { apiRoot,
+import {
+  apiRoot,
   // folderRoot 
 } from '../../constant/index';
 
@@ -39,7 +41,8 @@ import Wrapper from '../../component/Wrapper/Wrapper';
 // import PopupQuestion from '../../component/Popup/PopupQuestion';
 
 // helpers
-import { isNullOrUndefined,
+import {
+  isNullOrUndefined,
   // isNullOrEmpty
 } from '../../utils/helpers';
 
@@ -54,7 +57,7 @@ export default function Dashboard() {
   const classes = useStyles();
   // const [isLoading, setisLoading] = useState(false);
   const [data, setData] = useState([]);
-  // const [open, setOpen] = useState(false);
+  // const [realtimeDB, setRealtimeDB] = useState([]);
   // const [dashboardSelected, setDashboardSelected] = useState();
   // const [pageSize, setPageSize] = useState(20)
   const [tab, setTab] = useState('1');
@@ -68,28 +71,83 @@ export default function Dashboard() {
   //   isLoading2: false,
   //   msg: ''
   // });
+  // const [isdb, setIsdb] = useState();  
+  // console.log("analytics: ", analytics);
+  // console.log("app: ", app);
+  // console.log("analytics: ", analytics);
+  // console.log("getAll: ", getAll);
+  // console.log("DB: ", db);
+  // console.log("realtimeDB: ", database.ref("device"));
 
+  // const [status, setStatus] = useState();
+  const [realtimeDB, setRealtimeDB] = useState([]);
+
+  // const [status, setStatus] = useState();
   useEffect(() => {
+    // setIsdb(db);
     async function getData() {
-    // if (isNullOrUndefined(token)) return;
-    // show loading
-    // setisLoading(true);
+      // if (isNullOrUndefined(token)) return;
+      // show loading
+      // setisLoading(true);
 
-    // call api get data
-    const result = await getDashboards();
+      // call api get data
+      const result = await getDashboards();
 
-    // hide loading
-    // setisLoading(false);
+      // hide loading
+      // setisLoading(false);
 
-    // faild
-    if (!result) return;
+      // faild
+      if (!result) return;
 
-    // success
-    setData(result.items);
+      // success
+      setData(result.items);
     }
 
     getData();
   }, []);
+
+  const db = getDatabase();
+  React.useEffect(() => {
+    const starCountRef = ref(db, 'device');
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      const dataMap = Object.keys(data).map((key, i) => (
+        {
+          id: i,
+          name: key,
+          stt: i + 1,
+          value: data[key]
+        })
+      );
+      // console.log(dataMap)
+      setRealtimeDB(dataMap);
+      // console.log(database)
+    });
+    return () => {
+      setRealtimeDB({}); // This worked for me
+    };
+  }, [database]);
+  // useEffect(() => {
+  //   // console.log(realtimeDB)
+  // }, [realtimeDB]);
+  // React.useEffect(() => {
+  //   // database.ref("device").on("value", (snapshot) => {
+  //   //   setAge(snapshot.val());
+  //   // });
+  //   async function getDataFirebase() {
+  //     const querySnapshot = await getDocs(collection(database, "device"));
+  //     querySnapshot.forEach((doc) => {
+  //       console.log(`${doc.id} => ${doc.data()}`);
+  //       console.log(doc.data());
+  //       console.log(doc.data().relay1);
+  //       console.log(doc);
+  //     })
+  //     console.log(querySnapshot);
+
+  //     // setData(querySnapshot);
+  //   }
+  //   getDataFirebase();
+  // }, []);
   const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
     '& .MuiSwitch-track': {
@@ -151,7 +209,7 @@ export default function Dashboard() {
   const handleSearchDashboard = async (formValue, callback) => {
     // call api search user
     const result = await getDashboards(formValue);
-    console.log(result)
+    // console.log(result)
     if (!result) {
       callback();
       return;
@@ -177,15 +235,39 @@ export default function Dashboard() {
   //   setOpen(false);
   // };
   const handleChangeField = name => e => {
-      let val = e.target.value;
-      setData({ ...data, [name]: val });
+    let val = e.target.value;
+    setData({ ...data, [name]: val });
   };
-  const renderChangleButton = () => {
+  // const s = realtimeDB.map(item => item.value);
+  // console.log(s)
+
+  const handleChangeSwitch = val => {
+    // console.log(e.value)
+    let newKey = val.value;
+    if (val.value === 1) {
+      newKey = 0
+    } else if (val.value === 0) {
+      newKey = 1
+    }
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    const updates = {};
+    updates['/device/' + val.name] = newKey;
+    update(ref(db), updates);
+    // setStatus(newKey);
+  };
+  // console.log(status);
+  const renderChangleButton = (params) => {
+    // console.log(params.row.value)
     return (
       <React.Fragment>
         <FormControlLabel
-          control={<Android12Switch defaultChecked />}
+          control={<Android12Switch
+            name={params.row.name}
+            onChange={() => handleChangeSwitch(params.row)}
+            checked={params.row.value === 1 ? true : false}
+          />}
           label=""
+          className={classes.switch}
         />
       </React.Fragment>
     )
@@ -194,14 +276,14 @@ export default function Dashboard() {
   // render Dashboards
   const Dashboards = [];
   data.length > 0 &&
-  data.map((row, i) => (
-    Dashboards.push (row = {
-      id: row.id,
-      stt: i + 1,
-      name: row.firstName + " " + row.lastName,
-    })
-  ));
-
+    data.map((row, i) => (
+      Dashboards.push(row = {
+        id: row.id,
+        stt: i + 1,
+        name: row.firstName + " " + row.lastName,
+      })
+    ));
+  // console.log(Dashboards)
   // render columns
   const columns = [
     {
@@ -222,6 +304,15 @@ export default function Dashboard() {
       headerClassName: 'super-app-theme--header',
     },
     {
+      field: 'value',
+      headerName: 'value',
+      // headerAlign: 'center',
+      // align: 'center',
+      minWidth: 150,
+      flex: 1,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
       field: 'Hành động',
       headerAlign: 'center',
       align: 'center',
@@ -234,20 +325,20 @@ export default function Dashboard() {
 
   const CustomLoadingOverlay = () => {
     return (
-    <GridOverlay>
-      <div className={classes.LoadingGridOverlay}>
-        <CircularProgress
-          size={50}
-          className={classes.iconProgress}
-        />
-      </div>
-    </GridOverlay>
+      <GridOverlay>
+        <div className={classes.LoadingGridOverlay}>
+          <CircularProgress
+            size={50}
+            className={classes.iconProgress}
+          />
+        </div>
+      </GridOverlay>
     );
   };
   const CustomNoRowsOverlay = () => {
     return (
       <GridOverlay>
-        <div style={{align: 'center'}}>
+        <div style={{ align: 'center' }}>
           không có dữ liệu của loại thiết bị.
         </div>
       </GridOverlay>
@@ -258,7 +349,7 @@ export default function Dashboard() {
     return (
       <div className={clsx(classes.formGroup, classes.borderBot)}>
         <Typography className={classes.spanDevice}>Thiết bị 1</Typography>
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <Typography className={classes.Offline}>Offline</Typography>
           <Button className={classes.btnDetails}>Chi tiết</Button>
         </div>
@@ -293,21 +384,7 @@ export default function Dashboard() {
                     disableColumnMenu
                     className={clsx(classes.container, classes.heightDashboard, classes.breakpoint)}
                     columns={columns}
-                    rows={Dashboards}
-                    hideFooter={true}
-                    components={{
-                      LoadingOverlay: CustomLoadingOverlay,
-                      NoRowsOverlay: CustomNoRowsOverlay,
-                      Toolbar: CustomToolbar,
-                    }}
-                  />
-                  <DataGrid
-                    pagination
-                    rowHeight={36}
-                    disableColumnMenu
-                    className={clsx(classes.container, classes.heightDashboard, classes.breakpoint)}
-                    columns={columns}
-                    rows={Dashboards}
+                    rows={realtimeDB}
                     hideFooter={true}
                     components={{
                       LoadingOverlay: CustomLoadingOverlay,
@@ -317,7 +394,7 @@ export default function Dashboard() {
                   />
                 </TabPanel>
                 <TabPanel value="2">
-                  <div style={{marginTop: '-60px'}}>
+                  <div style={{ marginTop: '-60px' }}>
                     <div className={classes.deviceCodeForm}>
                       <Typography>Mã thiết bị: </Typography>
                       <div className={clsx(classes.search, classes.marTop0)}>
@@ -332,20 +409,20 @@ export default function Dashboard() {
                       </div>
                     </div>
                     {Dashboards ? (
-                    <DataGrid
-                      pagination
-                      rowHeight={36}
-                      disableColumnMenu
-                      className={clsx(classes.container, classes.heightDashboard2, classes.breakpoint2)}
-                      columns={columns}
-                      rows={Dashboards}
-                      hideFooter={true}
-                      components={{
-                        LoadingOverlay: CustomLoadingOverlay,
-                        NoRowsOverlay: CustomNoRowsOverlay,
-                        Toolbar: CustomToolbar,
-                      }}
-                    />) : '' }
+                      <DataGrid
+                        pagination
+                        rowHeight={36}
+                        disableColumnMenu
+                        className={clsx(classes.container, classes.heightDashboard2, classes.breakpoint2)}
+                        columns={columns}
+                        rows={Dashboards}
+                        hideFooter={true}
+                        components={{
+                          LoadingOverlay: CustomLoadingOverlay,
+                          NoRowsOverlay: CustomNoRowsOverlay,
+                          Toolbar: CustomToolbar,
+                        }}
+                      />) : ''}
                   </div>
                 </TabPanel>
               </TabContext>
@@ -359,12 +436,12 @@ export default function Dashboard() {
 //  get Dashboards
 async function getDashboards(data) {
   // console.log(data)
-  let url = `${apiRoot}/users?page=-1`;
+  let url = `${apiRoot}/users`;
   if (!isNullOrUndefined(data)) {
-    url = `${apiRoot}/users?Search=${data.searchTerm}&page=-1`;
+    url = `${apiRoot}/users?Search=${data.searchTerm}`;
   }
   try {
-    const res = await axios.get( url );
+    const res = await axios.get(url);
     // error
     if (res.status !== 200) {
       return null;
@@ -382,7 +459,7 @@ async function getDashboards(data) {
 //   if (isNullOrEmpty(id)) return;
 //   try {
 //     const res = await axios.delete(`${apiRoot}/device-types/${id}`, data);
-//     // error
+//     // errora
 //     if (res.status !== 200) {
 //       return false;
 //     }
