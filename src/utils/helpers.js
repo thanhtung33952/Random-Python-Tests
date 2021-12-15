@@ -41,3 +41,4 @@ export const padClientID = (str, size) => {
   }
   return strResult;
 };
+export const ROOT_URL = 'http://124.158.10.143:8087/api';

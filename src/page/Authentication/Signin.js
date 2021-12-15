@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import classNames from 'classnames';
 import { instanceOf } from 'prop-types';
+import { useHistory } from "react-router-dom";
 
 import { withCookies, Cookies, useCookies } from 'react-cookie';
 // icon
@@ -23,9 +24,8 @@ import IconButton from '@material-ui/core/IconButton';
 // image
 import logo from '../../assets/img/logos.jpg';
 // constant
-import { folderRoot } from '../../constant/index';
+// import { folderRoot } from '../../constant/index';
 // import axios from 'axios';
-// import { useHistory } from "react-router-dom";
 
 // jss
 import useStyles from '../../assets/jss/Page/Authentication/Authentication';
@@ -45,9 +45,9 @@ function Signin() {
     status: 0, // 0: normar, -1 error, 1 success
     msg: ''
   });
-  
+
   const [showPass, setShowpass] = useState(false);
-  // let history = useHistory();
+  let history = useHistory();
 
   // isValid isEmail
   const isEmail = () => {
@@ -99,9 +99,9 @@ function Signin() {
         status: 1,
         msg: 'Đăng nhập thành công'
       });
-      window.location.href = `${folderRoot}Khach-hang`;
+      history.push("/Khach-hang");
     }
-    else{
+    else {
       setSubmit({
         ...submit,
         isLoadding: false,
@@ -120,7 +120,7 @@ function Signin() {
   };
   //show pass
   const handleClickShowPassword = () => {
-    setShowpass({ ...showPass, password : !showPass.password});
+    setShowpass({ ...showPass, password: !showPass.password });
   };
   const handleMouseDownPassword = event => {
     event.preventDefault();

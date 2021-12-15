@@ -5,7 +5,6 @@ import { drawerWidth } from '../../assets/common';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-  
   content: {
     backgroundColor: theme.palette.background.default,
     minWidth: 0,

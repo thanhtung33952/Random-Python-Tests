@@ -31,8 +31,8 @@ export default function FormCustomer() {
   const classes = useStyles();
   // mode insert/update
   let { customer_id } = useParams();
-  const [ isNew, setNewCustomer ] = useState(true);
-  const [ customersData, setCustomersData ] = useState(''); // userName, email, role, departmentId, approvalGroupId
+  const [isNew, setNewCustomer] = useState(true);
+  const [customersData, setCustomersData] = useState(''); // userName, email, role, departmentId, approvalGroupId
   // list  Device type
   const [listCustomer, setListCustomer] = useState(null);
   // console.log(customersData)
@@ -41,43 +41,43 @@ export default function FormCustomer() {
   const deviceId = useFormSelect(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.deviceId : undefined,
-      true
+    true
   );
   const firstName = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.firstName : '',
-      true
+    true
   );
-  
+
   const lastName = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.lastName : '',
-      true
+    true
   );
-  
+
   const email = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.email : '',
-      true,
-      true
+    true,
+    true
   );
-  
+
   const address = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.address : '',
-      true
+    true
   );
-  
+
   const phone = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.phone : '',
-      true
+    true
   );
-  
+
   const description = useFormInput(
     !isNullOrUndefined(customersData) && !isNullOrEmpty(customersData)
       ? customersData.description : '',
-      true
+    true
   );
   // flag submit
   const [statusSubmit, setStatusSubmit] = useState({
@@ -92,7 +92,7 @@ export default function FormCustomer() {
   const [isOpenQuestion, setOpenPopupQuestion] = useState(false);
   // is open popup question update
   const [isOpenQuestionUpdate, setOpenPopupQuestionUpdate] = useState(false);
-// console.log(customer_id)
+  // console.log(customer_id)
   useEffect(() => {
     // check isNew user
     !isNullOrUndefined(customer_id) && setNewCustomer(false);
@@ -255,13 +255,13 @@ export default function FormCustomer() {
   // rending option user status
   const optionCustomers = []
   !isNullOrEmpty(listCustomer) &&
-  listCustomer.map(e => {
-    optionCustomers.push (
-      <option value={e.id} key={e.id}>
-        {e.imei}
-      </option>
-    );
-  });
+    listCustomer.map(e => {
+      optionCustomers.push(
+        <option value={e.id} key={e.id}>
+          {e.imei}
+        </option>
+      );
+    });
   // validation
   const validation = () => {
     if (isNew) {
@@ -275,7 +275,7 @@ export default function FormCustomer() {
         !isNullOrEmpty(phone.value) &&
         !isNullOrEmpty(description.value)
       )
-      return true;
+        return true;
     } else {
       if (
         customersData.firstName !== firstName.value ||
@@ -284,7 +284,7 @@ export default function FormCustomer() {
         customersData.phone !== phone.value ||
         customersData.description !== description.value
       )
-      return true;
+        return true;
     }
   };
   return (
@@ -306,7 +306,7 @@ export default function FormCustomer() {
             >
               <Select
                 native
-                style={{width: '100%'}}
+                style={{ width: '100%' }}
                 onChange={handleChange('deviceId')}
                 {...deviceId}
                 disabled={isNew ? false : true}
@@ -317,11 +317,11 @@ export default function FormCustomer() {
             </FormControl>
           </div>
         </div>
-        {deviceId.value === '' ? 
+        {deviceId.value === '' ?
           <FormHelperText className={classes.selectErro}>
             Đây là một mục bắt buộc.
           </FormHelperText>
-          : '' 
+          : ''
         }
         <div className={classes.formGroup}>
           <label>
@@ -359,7 +359,7 @@ export default function FormCustomer() {
           </label>
           <TextField {...description} />
         </div>
-        
+
         {/* row submit */}
         <div className={classes.rowSubmit}>
           <Typography
@@ -383,7 +383,7 @@ export default function FormCustomer() {
               <CircularProgress size={24} className={classes.iconProgress} />
             )}
           </div>
-          
+
           {/* popup action after call api user */}
           <PopupQuestion
             open={isOpenQuestion}
@@ -395,12 +395,12 @@ export default function FormCustomer() {
 
           {/* popup question update data */}
           <PopupQuestion
-          open={isOpenQuestionUpdate}
-          content="Bạn có muốn lưu các thay đổi của bạn?"
-          callback={handleUpdate}
-          handleClose={() => setOpenPopupQuestionUpdate(false)}
-        />
-        {/* end popup */}
+            open={isOpenQuestionUpdate}
+            content="Bạn có muốn lưu các thay đổi của bạn?"
+            callback={handleUpdate}
+            handleClose={() => setOpenPopupQuestionUpdate(false)}
+          />
+          {/* end popup */}
         </div>
       </div>
     </div>

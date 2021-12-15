@@ -283,7 +283,7 @@ export default function Customer() {
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer className={classes.justEnd}>
-        <GridToolbarColumnsButton className={classes.marTop20}/>
+        <GridToolbarColumnsButton className={classes.marTop20} />
         <GridToolbarExport className={classes.marTop20} csvOptions={{
           utf8WithBom: true,
         }}/>

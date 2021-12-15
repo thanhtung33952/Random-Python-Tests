@@ -1,73 +1,73 @@
-import { alpha , makeStyles } from '@material-ui/core/styles';
+import { alpha, makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
-	root: {
-		padding: '0 16px',
-		'& .super-app-theme--header': {
-			color: '#000',
-			fontSize: '1rem',
-			padding: '0 5px',
-		},
-		'& .MuiDataGrid-root':{
-			'& .MuiDataGrid-columnsContainer': {
-				cursor: 'pointer',
-				lineHeight: '50px !important',
-				minHeight: '50px !important',
-				maxHeight: '50px !important',
-			},
-			'& .MuiDataGrid-window': {
-				top: '50px !important'
-			},
-			'& .MuiDataGrid-cell': {
+  root: {
+    padding: '0 16px',
+    '& .super-app-theme--header': {
+      color: '#000',
+      fontSize: '1rem',
+      padding: '0 5px',
+    },
+    '& .MuiDataGrid-root': {
+      '& .MuiDataGrid-columnsContainer': {
+        cursor: 'pointer',
+        lineHeight: '50px !important',
+        minHeight: '50px !important',
+        maxHeight: '50px !important',
+      },
+      '& .MuiDataGrid-window': {
+        top: '50px !important'
+      },
+      '& .MuiDataGrid-cell': {
         padding: '0 10px',
-				overflow: 'auto',
-				overflowY: 'hidden !important',
-				textOverflow: 'inherit',
-				'&::-webkit-scrollbar-track': {
-					backgroundColor: '#CCCCCC',
-					webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
-					borderRadius: 10
-				},
-				'&::-webkit-scrollbar' :{
-					height: 5,
-					backgroundColor: '#F5F5F5',
-				},
-				'&::-webkit-scrollbar-thumb': {
-					borderRadius: 10,
-					webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
-					backgroundColor: '#918f8f',
-					outline: '1px solid slategrey'
-				},
-			}
-		},
+        overflow: 'auto',
+        overflowY: 'hidden !important',
+        textOverflow: 'inherit',
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#CCCCCC',
+          webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+          borderRadius: 10
+        },
+        '&::-webkit-scrollbar': {
+          height: 5,
+          backgroundColor: '#F5F5F5',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          borderRadius: 10,
+          webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+          backgroundColor: '#918f8f',
+          outline: '1px solid slategrey'
+        },
+      }
+    },
     '& .MuiDataGrid-columnHeaderTitle': {
       fontSize: '18px'
     },
     '& .MuiDataGrid-toolbarContainer': {
       '& .MuiButton-textPrimary': {
         color: theme.palette.green.light
-      },
+      }
     },
-		'& .super-app-theme--cell': {
-			fontWeight: '600',
-		},
-		'& .super-app-theme--cell--underline': {
-			textDecoration: 'underline',
-		},
-		'& .super-app.negative': {
-			color: 'red',
-		},
-		'& .MuiDataGrid-footer': {
-			minHeight: 25,
-			height: 35
-		},
-		'& .MuiIconButton-root': {
-			padding: 6
-		},
-		'& .MuiTablePagination-actions': {
-			marginRight: 20
-		},
-	},
+    '& .super-app-theme--cell': {
+      fontWeight: '600',
+    },
+    '& .super-app-theme--cell--underline': {
+      textDecoration: 'underline',
+    },
+    '& .super-app.negative': {
+      color: 'red',
+    },
+    '& .MuiDataGrid-footer': {
+      minHeight: 25,
+      height: 35
+    },
+    '& .MuiIconButton-root': {
+      padding: 6
+    },
+    '& .MuiTablePagination-actions': {
+      marginRight: 20
+    },
+  },
   container: {
     padding: '0 28px',
     height: 'calc(100vh - 230px)',
@@ -84,9 +84,9 @@ export default makeStyles((theme) => ({
     margin: '10px 40px 0 40px',
     fontSize: 24,
   },
-	rowButtonAdd: {
+  rowButtonAdd: {
     // margin: '10px 40px 0 0',
-	},
+  },
   btnAdd: {
     height: 38,
     color: '#fff',
@@ -100,21 +100,21 @@ export default makeStyles((theme) => ({
       backgroundColor: theme.palette.blue.light,
     },
   },
-	btnIcon: {
-		marginLeft: 15
-	},
-	formGroup: {
-		marginLeft: 0,
-		display: 'flex',
-		// width: '100%',
-		flex: 1,
-		verticalAlign: 'middle',
-		alignItems: 'center',
-		// marginRight: 22,
-		marginBottom: 10,
-		'& label': {
-		width: '35%',
-		fontSize: 13,
+  btnIcon: {
+    marginLeft: 15
+  },
+  formGroup: {
+    marginLeft: 0,
+    display: 'flex',
+    // width: '100%',
+    flex: 1,
+    verticalAlign: 'middle',
+    alignItems: 'center',
+    // marginRight: 22,
+    marginBottom: 10,
+    '& label': {
+      width: '35%',
+      fontSize: 13,
     },
     // '& $inputControl': {
     //   '& input': {
@@ -142,7 +142,7 @@ export default makeStyles((theme) => ({
     maxWidth: 30,
     // color: '#fff',
     color: theme.palette.redColor.main,
-    background:'transparent',
+    background: 'transparent',
     textTransform: 'none',
     borderRadius: "50rem",
     '&:hover': {
@@ -161,10 +161,10 @@ export default makeStyles((theme) => ({
     },
   },
   msgSuc: {
-	color: theme.palette.green.main
+    color: theme.palette.green.main
   },
   msgError: {
-	color: theme.palette.redColor.main
+    color: theme.palette.redColor.main
   },
   gridContainer: {
     boxShadow: 'rgb(14 30 37 / 12%) 0px 2px 4px 0px, rgb(14 30 37 / 32%) 0px 2px 10px 0px',
@@ -172,7 +172,7 @@ export default makeStyles((theme) => ({
     marginTop: 10
   },
   heightDashboard: {
-    height: 'calc(100vh - 260px)',
+    height: 'calc(100vh - 230px)',
     margin: 10,
   },
   heightDashboard2: {
@@ -180,10 +180,11 @@ export default makeStyles((theme) => ({
   },
   breakpoint: {
     [theme.breakpoints.down('sm')]: {
-      height: 'calc(100vh - 560px)',
+      height: 'calc(100vh - 320px)',
+      // height: '100vh'
     },
     [theme.breakpoints.up('sm')]: {
-      height: 'calc(100vh - 260px)',
+      height: 'calc(100vh - 310px)',
     },
   },
   breakpoint2: {
@@ -205,10 +206,12 @@ export default makeStyles((theme) => ({
   borderBot: {
     borderBottom: '1px solid grey',
     marginBottom: 0,
-    justifyContent: 'space-between'
+    justifyContent: 'end',
+    padding: '10px 0px'
+
   },
   Offline: {
-    background: 'rgb(255, 85, 0)',
+    background: 'green',
     padding: '1px 8px',
     color: '#fff',
     marginRight: 10,
@@ -223,7 +226,7 @@ export default makeStyles((theme) => ({
     }
   },
   spanDevice: {
-    margin: '15px 0', 
+    margin: '15px 0',
     fontSize: '1.1rem',
     fontƯeight: '600'
   },
@@ -234,6 +237,7 @@ export default makeStyles((theme) => ({
     marginBottom: 20,
     // justifyContent: 'center',
     marginLeft: 30,
+    marginTop: 50,
     flexWrap: 'wrap',
     '& .MuiTabPanel': {
       padidng: '0px !important'
@@ -247,7 +251,61 @@ export default makeStyles((theme) => ({
   marTop20: {
     marginTop: 20,
   },
-  justEnd: {
-    // justifyContent: 'flex-end',
+  switch: {
+    margin: 'auto !important'
   },
+  formContent: {
+    // padding: 40,
+    position: 'relative',
+  },
+  scrollPage: {
+    overflowY: 'auto',
+    // height: 'calc(100vh - 220px)'
+  },
+
+  formGroup2: {
+    display: 'flex',
+    margin: '10px 40px 0 40px',
+    alignItems: 'center',
+    '& label': {
+      width: '15%',
+      fontSize: '1.2rem',
+      '& em': {
+        color: 'red',
+        fontStyle: 'inherit',
+      },
+    },
+    [theme.breakpoints.down('xs')]: {
+      display: 'block',
+    },
+    [theme.breakpoints.up('xs')]: {
+      '& label': {
+        width: '35%',
+      },
+    },
+    [theme.breakpoints.up('sm')]: {
+      '& label': {
+        width: '15%',
+      },
+    }
+  },
+  rowInline: {
+    display: 'flex',
+    // width: '90%',
+    flex: 1,
+  },
+  formControlSelect: {
+    flex: '1 auto',
+    '& select': {
+      padding: 10,
+    },
+    '& fieldset': {
+      // borderColor: theme.palette.grey.light
+    },
+  },
+  tabList: {
+    '& .css-heg063-MuiTabs-flexContainer': {
+      justifyContent: 'space-around',
+    }
+  }
 }));

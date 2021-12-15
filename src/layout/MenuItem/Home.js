@@ -8,7 +8,7 @@ export default function Home() {
         alignItems: 'center',
         height: '100%'
       }}>
-      <h2> wellcom to viet-map</h2>
+      <h2> wellcom to Ecevn</h2>
     </div>
   );
 }
