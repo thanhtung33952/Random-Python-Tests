@@ -34,7 +34,7 @@ function Signin() {
   const classes = useStyles();
   const [isCheck, setCheck] = useState();
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie] = useCookies(['AuthenticationEcevn']);
+  const [cookies, setCookie] = useCookies(['AuthenticationNowpay']);
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -87,7 +87,7 @@ function Signin() {
     setSubmit({ ...submit, isLoading: true });
     if (data.email === "admin@gmail.com" && data.password === 'P@ss123') {
       setCookie(
-        'AuthenticationEcevn',
+        'AuthenticationNowpay',
         {
           email: data.email,
         },
@@ -133,8 +133,8 @@ function Signin() {
             <CardContent>
               {/* logo */}
               <div className={classes.logo}>
-                <img src={logo} alt="Ecevn" />
-                <span> Hệ Thống Ecevn</span>
+                <img src={logo} alt="Nowpay" />
+                <span> Hệ Thống Nowpay</span>
               </div>
               {/* form signin */}
               <form className={classes.form}>

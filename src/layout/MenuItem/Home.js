@@ -8,7 +8,7 @@ export default function Home() {
         alignItems: 'center',
         height: '100%'
       }}>
-      <h2> wellcom to Ecevn</h2>
+      <h2> wellcom to Nowpay</h2>
     </div>
   );
 }

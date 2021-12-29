@@ -16,8 +16,8 @@ function Dashboard() {
   const classes = useStyles();
   const [opened, setOpened] = useState(true);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [cookies] = useCookies(['AuthenticationEcevn']);
-  const userInfo = cookies.AuthenticationEcevn;
+  const [cookies] = useCookies(['AuthenticationNowpay']);
+  const userInfo = cookies.AuthenticationNowpay;
   // console.log(userInfo)
 
   const resizeDispatch = () => {
@@ -62,9 +62,9 @@ function Dashboard() {
 
   // logout
   const handleLogout = () => {
-    // removeCookie('AuthenticationEcevn');
+    // removeCookie('AuthenticationNowpay');
     document.cookie =
-      'AuthenticationEcevn=; path=/; expires=' + new Date(0).toUTCString();
+      'AuthenticationNowpay=; path=/; expires=' + new Date(0).toUTCString();
     window.location.href = `${folderRoot}signin`;
   };
   return (
