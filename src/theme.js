@@ -79,6 +79,7 @@ const theme = createTheme({
   typography: {
     useNextVariants: true
   },
+  
 });
 
 export default theme;
